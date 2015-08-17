@@ -1,10 +1,14 @@
 Armazenamento e distribuição dos dados
 ======================================
 
-O YEK é, de forma simplificada, um DHT (Distributed Hash Table).
-A forma de particionamento das chaves e distribuição dos dados, é feita com hashing consitente. 
+O YEK é, de forma simplificada, um DHT (Distributed Hash Table). Há diversas formas de se implementar uma DHT. No YEK, será implementado o protocolo Chord como base para o funcionamento do banco de dados, sendo este usado também por outros sistemas de chave-valor.
+
+A forma de particionamento das chaves e, consequentemente, a distribuição dos dados serão feitas com hashing consitente.
 
 Hashing consistente é um tipo especial de hash, que tem por objetivo diminuir o remapeamento de chaves quando um nó é adicionado ou removido. Além disso, é utilizado para encontrar em qual nó uma chave está presente.
-O protocolo utilizado para o DHT é o Chord.
 
-De modo geral o Chord cada nó escolhe um ID n-bit, geralmente através de uma função de hash; os IDs são organizados em um anel, cada nó é resposável por armazenar chaves próximas aos seus IDs. 
+De modo geral o Chord cada nó escolhe um ID _n_-bit, geralmente através de uma função de hash; os IDs são organizados em um anel, cada nó é resposável por armazenar chaves próximas aos seus IDs.
+
+Cada chave será também armazenada em outros nós, para que haja redundância dos dados, e no caso de falha, estes outros nós são capazes de atender à requisições.
+
+Quando esse nó com falha voltar, é necessário atualizá-lo com as últimas versões das chaves em que é responsável. Para isso, o YEK se utiliza de Merkle Trees, a fim de mandar pela rede apenas os dados que são necessários.
