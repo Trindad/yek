@@ -11,13 +11,13 @@ O sistema de build é feito usando a ferramenta [Buildr](https://buildr.apache.o
 gem install buildr
 ```
 
-Após intalá-la, execute o seguinte comando para compilar o código:
+Após intalá-la, execute o seguinte comando para (somente) compilar o código:
 
 ```
 buildr compile
 ```
 
-Para executar:
+Para compilar e executar:
 
 ```
 buildr run
