@@ -1,3 +1,4 @@
-class DistributedStorageProvider {
+package yek;
+public class DistributedStorageProvider {
 	
 }

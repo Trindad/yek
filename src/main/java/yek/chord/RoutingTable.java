@@ -1,10 +1,8 @@
-class RoutingTable {
-	String successorID;
-	String successorIP;
+package yek.chord;
 
-	public RoutingTable(String id, String ip)
-	{
-		this.successorIP = ip;
-		this.successorID = id;
-	}
+public class RoutingTable {
+
+	NodeInfo successor;
+	NodeInfo predecessor;
+	Finger []fingerTable;
 }

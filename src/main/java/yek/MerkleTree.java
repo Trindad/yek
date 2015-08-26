@@ -1,3 +1,4 @@
-class MerkleTree{
+package yek;
+public class MerkleTree{
 	
 }

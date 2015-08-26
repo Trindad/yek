@@ -1,4 +1,5 @@
-class Data {
+package yek;
+public class Data {
 	String key;
 	String value;
 	String id;

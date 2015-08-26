@@ -1,12 +1,14 @@
-class Node {
-	String id;
-	String ip;
+package yek.chord;
+import java.math.BigInteger;
+
+public class Node {
+	NodeInfo info;
 	RoutingTable routingTable;
 
-	public Node(String id,String ip)
+	public Node(String ip, BigInteger id)
 	{
-		this.id = id;
-		this.ip = ip;
+		this.info.id = id;
+		this.info.ip = ip;
 	}
 
 

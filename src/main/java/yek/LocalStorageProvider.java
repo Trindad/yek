@@ -1,3 +1,4 @@
-class LocalStorageProvider {
+package yek;
+public class LocalStorageProvider {
 	
 }
