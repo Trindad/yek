@@ -14,7 +14,7 @@ public class Request {
 			OutputStream os = socket.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(os);
             BufferedWriter bw = new BufferedWriter(osw);
-            bw.write(message);
+            bw.write(message + "\n");
             bw.flush();
 			
 			BufferedReader in = new BufferedReader(new
