@@ -34,7 +34,7 @@ public class Server implements Runnable {
 		try
 		{
 			InetAddress addr = InetAddress.getLocalHost();
-			
+
 			String ip = addr.getHostAddress();
 			System.out.println(ip);
 
@@ -60,15 +60,16 @@ public class Server implements Runnable {
 	{
 		try {
 			ServerSocket server = new ServerSocket(9345);
-		} catch (Exception e) {}
 
-		System.out.println("Listening on port 9345");
+			System.out.println("Listening on port 9345");
 
-		while (true) {
-			try {
+			while (true) {
 				Socket s = server.accept();
+				System.out.println("New connection!");
 				executorService.submit(new Client(s));
-			} catch (Exception e) {}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
