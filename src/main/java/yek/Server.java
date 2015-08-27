@@ -16,12 +16,16 @@ public class Server implements Runnable {
 	public Server()
 	{
 		initialServers = new NodeInfo[4];
-		String []ips = {"192.168.0.107"};
+		String []ips = {"192.168.0.107","192.168.0.108"};
 		Hash h = new Hash();
 
 		for (int i = 0; i < ips.length; i++) {
-			BigInteger b = h.sha1(ips[i]);
-			initialServers[i] = new NodeInfo(b, ips[i]);
+			try
+			{
+				BigInteger b = h.sha1(ips[i]);
+				initialServers[i] = new NodeInfo(b, ips[i]);
+			}
+			catch(Exception e){}
 		}
 	}
 
@@ -77,6 +81,6 @@ public class Server implements Runnable {
 	{
 		Node node = initNode();
 		(new Thread(this)).start();
-		connectToInitialServers();
+		// connectToInitialServers();
 	}
 }
