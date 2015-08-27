@@ -17,6 +17,8 @@ public class Node {
 			
 			return this.routingTable.successor;
 		}
+
+		return null;
 	}
 
 	public NodeInfo closestPrecedingNode(BigInteger id)
@@ -29,9 +31,8 @@ public class Node {
 			{
 				return finger;
 			}
-
-			return this.info;	
 		}
+		return this.info;	
 	}
 
 	public void create()
@@ -47,7 +48,7 @@ public class Node {
 
 	public void stabilize()
 	{
-		
+
 	}
 
 }

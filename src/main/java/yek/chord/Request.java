@@ -27,10 +27,12 @@ public class Request {
 			return m;
 		}
 		catch(Exception e) {}
+
+		return null;
 	}
 
 	public static NodeInfo find_successor(NodeInfo n, BigInteger id)
 	{
-
+		return null;
 	}
 }
