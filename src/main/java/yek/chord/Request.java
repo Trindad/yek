@@ -31,8 +31,36 @@ public class Request {
 		return null;
 	}
 
-	public static NodeInfo find_successor(NodeInfo n, BigInteger id)
+	public static NodeInfo findSuccessor(NodeInfo n, BigInteger id)
 	{
-		return null;
+		String message = "successor "+id.toString();
+
+		String answer = make(n,message);
+
+		String[] p = answer.split(" ");
+
+		NodeInfo node = new NodeInfo(new BigInteger(p[1]), p[0]);
+
+		return node;
+	}
+
+	public static NodeInfo predecessor(NodeInfo s)
+	{
+		String message = "predecessor";
+
+		String answer = make(s,message);
+
+		String[] p = answer.split(" ");
+
+		NodeInfo node = new NodeInfo(new BigInteger(p[1]), p[0]);
+
+		return node;
+	}
+
+	public static void notify(NodeInfo s, NodeInfo i)
+	{
+		String message = "notify "+i.ip + " "+i.id.toString();
+
+		make(s,message);
 	}
 }

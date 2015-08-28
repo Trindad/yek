@@ -18,7 +18,10 @@ public class Node {
 			return this.routingTable.successor;
 		}
 
-		return null;
+		NodeInfo n = closestPrecedingNode(id);
+
+
+		return Request.findSuccessor(n,id) ;
 	}
 
 	public NodeInfo closestPrecedingNode(BigInteger id)
@@ -42,13 +45,37 @@ public class Node {
 		routingTable.successor = this.info;
 	}
 
-	public void join()
+	public void join(NodeInfo n)
 	{
+		this.routingTable.predecessor = null;
+		this.routingTable.successor = Request.findSuccessor(n,this.info.id); 
 	}
 
 	public void stabilize()
 	{
+		NodeInfo s = this.routingTable.successor;
 
+		NodeInfo x = Request.predecessor(s);
+
+		if (x.id.compareTo(this.info.id) > 0 && x.id.compareTo(s.id) < 0) 
+		{
+			this.routingTable.successor = x;
+			s = x;
+		}
+
+		Request.notify(s, this.info);
 	}
 
+	public void notify(NodeInfo n)
+	{
+		if (this.routingTable.predecessor == null || (n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) ) 
+		{
+			this.routingTable.predecessor = n;
+		}
+	}
+
+	public void fixFingers()
+	{
+
+	}
 }
