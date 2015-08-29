@@ -47,7 +47,9 @@ public class Server implements Runnable {
 
 			return node;
 		}
-		catch(Exception e){}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 
 		return null;
 	}
@@ -83,6 +85,24 @@ public class Server implements Runnable {
 	{
 		this.node = initNode();
 		(new Thread(this)).start();
+
+		// try {
+		// 	String ip = "192.168.0.104";
+		// 	Hash h = new Hash();
+		// 	BigInteger b = h.sha1(ip);
+		// 	NodeInfo n = new NodeInfo(b, ip);
+
+		// 	this.node.join(n);
+
+		// 	NodeInfo me = this.node.info;
+		// 	Request.notify(this.node.routingTable.successor, me);
+		// 	NodeInfo pred = Request.predecessor(this.node.routingTable.successor);
+		// 	System.out.println(pred.ip);
+
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
+
 		// connectToInitialServers();
 	}
 }

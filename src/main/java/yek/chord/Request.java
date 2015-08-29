@@ -16,17 +16,19 @@ public class Request {
             BufferedWriter bw = new BufferedWriter(osw);
             bw.write(message + "\n");
             bw.flush();
-			
+
 			BufferedReader in = new BufferedReader(new
 			InputStreamReader(socket.getInputStream()));
-			
+
 			while (!in.ready()) {}
 			String m = in.readLine(); // Read one line and output it
 			System.out.println(m);
 			in.close();
 			return m;
 		}
-		catch(Exception e) {}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		return null;
 	}

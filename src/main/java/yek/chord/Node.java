@@ -7,14 +7,14 @@ public class Node {
 
 	public Node(String ip, BigInteger id)
 	{
-		this.info.id = id;
-		this.info.ip = ip;
+		this.info = new NodeInfo(id, ip);
+		this.routingTable = new RoutingTable();
 	}
 
 	public NodeInfo findSuccessor(BigInteger id)
 	{
 		if (this.info.id.compareTo(id) > 0 && this.routingTable.successor.id.compareTo(id) <= 0) {
-			
+
 			return this.routingTable.successor;
 		}
 
@@ -25,16 +25,16 @@ public class Node {
 
 	public NodeInfo closestPrecedingNode(BigInteger id)
 	{
-		for (int i = 160; i > 0 ; i--) 
+		for (int i = 160; i > 0 ; i--)
 		{
 			NodeInfo finger = this.routingTable.fingerTable[i].node;
 
-			if (this.info.id.compareTo(finger.id) > 0 && finger.id.compareTo(id) < 0) 
+			if (this.info.id.compareTo(finger.id) > 0 && finger.id.compareTo(id) < 0)
 			{
 				return finger;
 			}
 		}
-		return this.info;	
+		return this.info;
 	}
 
 	public void create()
@@ -47,7 +47,7 @@ public class Node {
 	public void join(NodeInfo n)
 	{
 		this.routingTable.predecessor = null;
-		this.routingTable.successor = Request.findSuccessor(n,this.info.id); 
+		this.routingTable.successor = Request.findSuccessor(n,this.info.id);
 	}
 
 	public void stabilize()
@@ -56,7 +56,7 @@ public class Node {
 
 		NodeInfo x = Request.predecessor(s);
 
-		if (x.id.compareTo(this.info.id) > 0 && x.id.compareTo(s.id) < 0) 
+		if (x.id.compareTo(this.info.id) > 0 && x.id.compareTo(s.id) < 0)
 		{
 			this.routingTable.successor = x;
 			s = x;
@@ -67,7 +67,7 @@ public class Node {
 
 	public void notify(NodeInfo n)
 	{
-		if (this.routingTable.predecessor == null || (n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) ) 
+		if (this.routingTable.predecessor == null || (n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) )
 		{
 			this.routingTable.predecessor = n;
 		}
