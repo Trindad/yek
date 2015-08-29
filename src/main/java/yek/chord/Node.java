@@ -2,8 +2,8 @@ package yek.chord;
 import java.math.BigInteger;
 
 public class Node {
-	NodeInfo info;
-	RoutingTable routingTable;
+	public NodeInfo info;
+	public RoutingTable routingTable;
 
 	public Node(String ip, BigInteger id)
 	{
@@ -19,7 +19,6 @@ public class Node {
 		}
 
 		NodeInfo n = closestPrecedingNode(id);
-
 
 		return Request.findSuccessor(n,id) ;
 	}

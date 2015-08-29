@@ -2,7 +2,7 @@ package yek.chord;
 
 public class RoutingTable {
 
-	NodeInfo successor;
-	NodeInfo predecessor;
-	Finger []fingerTable;
+	public NodeInfo successor;
+	public NodeInfo predecessor;
+	public Finger []fingerTable;
 }

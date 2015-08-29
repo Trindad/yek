@@ -9,6 +9,7 @@ import java.util.concurrent.*;
 
 public class Server implements Runnable {
 	public ServerSocket server;
+	private Node node;
 	private ExecutorService executorService = Executors.newFixedThreadPool(20);
 
 	private NodeInfo []initialServers;
@@ -66,7 +67,7 @@ public class Server implements Runnable {
 			while (true) {
 				Socket s = server.accept();
 				System.out.println("New connection!");
-				executorService.submit(new Client(s));
+				executorService.submit(new Response(s, this.node));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,7 +81,7 @@ public class Server implements Runnable {
 
 	public void start()
 	{
-		Node node = initNode();
+		this.node = initNode();
 		(new Thread(this)).start();
 		// connectToInitialServers();
 	}

@@ -37,7 +37,7 @@ public class Request {
 
 		String answer = make(n,message);
 
-		String[] p = answer.split(" ");
+		String[] p = answer.split(" ");//retorna ip e id
 
 		NodeInfo node = new NodeInfo(new BigInteger(p[1]), p[0]);
 

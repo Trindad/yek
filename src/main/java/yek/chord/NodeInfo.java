@@ -3,8 +3,8 @@ import java.math.BigInteger;
 
 public class NodeInfo {
 	
-	BigInteger id;
-	String ip;
+	public BigInteger id;
+	public String ip;
 
 	public NodeInfo(BigInteger id, String ip)
 	{
