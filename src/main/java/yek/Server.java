@@ -36,7 +36,7 @@ public class Server implements Runnable {
 		{
 			InetAddress addr = InetAddress.getLocalHost();
 
-			String ip = addr.getHostAddress();
+			String ip = "192.168.0.101";
 			System.out.println(ip);
 
 			Hash h = new Hash();
@@ -85,7 +85,7 @@ public class Server implements Runnable {
 	{
 		this.node = initNode();
 		this.node.create();
-		
+
 		(new Thread(this)).start();
 		(new Thread(new BackgroundWorker(this.node))).start();
 

@@ -51,7 +51,7 @@ class Response implements Runnable {
       OutputStream os = this.socket.getOutputStream();
       OutputStreamWriter osw = new OutputStreamWriter(os);
       BufferedWriter bw = new BufferedWriter(osw);
-      bw.write(response);
+      bw.write(response+"\n");
       bw.flush();
       socket.close();
     }catch(IOException ioe) {

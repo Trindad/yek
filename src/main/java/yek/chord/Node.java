@@ -31,7 +31,7 @@ public class Node {
 	public NodeInfo closestPrecedingNode(BigInteger id)
 	{	
 		try {
-			for (int i = 159; i > 0 ; i--)
+			for (int i = 159; i >= 0 ; i--)
 			{
 				if (this.routingTable.fingerTable[i] == null) {
 					continue;
