@@ -23,8 +23,9 @@ class Response implements Runnable {
 
       while (!in.ready()) {}
       String m = in.readLine(); // Read one line and output it
-      
+      System.out.println("response: " + m);
       String[] parts = m.split(" ");
+      System.out.println("'" + parts[0] + "'");
       String response = "";
 
       switch (parts[0]) {

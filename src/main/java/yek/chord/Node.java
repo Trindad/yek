@@ -17,25 +17,35 @@ public class Node {
 	public NodeInfo findSuccessor(BigInteger id)
 	{
 		if (this.info.id.compareTo(id) > 0 && this.routingTable.successor.id.compareTo(id) <= 0) {
-
 			return this.routingTable.successor;
 		}
 
 		NodeInfo n = closestPrecedingNode(id);
+		if (n.id.equals(this.info.id)) {
+			return n;
+		}
 
 		return Request.findSuccessor(n,id) ;
 	}
 
 	public NodeInfo closestPrecedingNode(BigInteger id)
-	{
-		for (int i = 160; i > 0 ; i--)
-		{
-			NodeInfo finger = this.routingTable.fingerTable[i].node;
-
-			if (this.info.id.compareTo(finger.id) > 0 && finger.id.compareTo(id) < 0)
+	{	
+		try {
+			for (int i = 159; i > 0 ; i--)
 			{
-				return finger;
+				if (this.routingTable.fingerTable[i] == null) {
+					continue;
+				}
+
+				NodeInfo finger = this.routingTable.fingerTable[i].node;
+
+				if (this.info.id.compareTo(finger.id) > 0 && finger.id.compareTo(id) < 0)
+				{
+					return finger;
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return this.info;
 	}
