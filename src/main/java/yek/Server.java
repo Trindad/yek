@@ -84,7 +84,10 @@ public class Server implements Runnable {
 	public void start()
 	{
 		this.node = initNode();
+		this.node.create();
+		
 		(new Thread(this)).start();
+		(new Thread(new BackgroundWorker(this.node))).start();
 
 		// try {
 		// 	String ip = "192.168.0.104";

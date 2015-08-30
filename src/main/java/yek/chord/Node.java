@@ -52,9 +52,8 @@ public class Node {
 
 	public void create()
 	{
-		this.routingTable = new RoutingTable();
-
 		routingTable.successor = this.info;
+		routingTable.predecessor = this.info;
 	}
 
 	public void join(NodeInfo n)
@@ -65,7 +64,12 @@ public class Node {
 
 	public void stabilize()
 	{
+		System.out.println("Stabilizing...");
 		NodeInfo s = this.routingTable.successor;
+
+		if (s == null) {
+			return;
+		}
 
 		NodeInfo x = Request.predecessor(s);
 
