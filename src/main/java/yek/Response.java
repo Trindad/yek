@@ -40,6 +40,11 @@ class Response implements Runnable {
 
           response = this.notify(ip, id);
           break;
+        case "store":
+          response = this.store(parts[1], parts[2]);
+          break;
+        default:
+          break;
       }
 
       OutputStream os = this.socket.getOutputStream();
@@ -75,5 +80,16 @@ class Response implements Runnable {
 
     return "";
   }
+
+  private String store(String keyBase64, String dataBase64)
+  {
+    String key = Hash.base64Decode(keyBase64);
+    String data = Hash.base64Decode(dataBase64);
+
+    this.node.put(key,data);
+
+    return "";
+  }
+
 
 }

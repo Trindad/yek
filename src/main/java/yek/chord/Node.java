@@ -1,14 +1,17 @@
 package yek.chord;
 import java.math.BigInteger;
+import java.util.Hashtable;
 
 public class Node {
 	public NodeInfo info;
 	public RoutingTable routingTable;
+	public Hashtable<BigInteger, String> hashtable;
 
 	public Node(String ip, BigInteger id)
 	{
 		this.info = new NodeInfo(id, ip);
 		this.routingTable = new RoutingTable();
+		this.hashtable = new Hashtable<BigInteger, String>();
 	}
 
 	public NodeInfo findSuccessor(BigInteger id)
@@ -76,5 +79,30 @@ public class Node {
 	public void fixFingers()
 	{
 
+	}
+
+	public void put(String key,String data)
+	{
+		try{
+			Hash h = new Hash();
+
+			BigInteger id = h.sha1(key);
+			NodeInfo n = findSuccessor(id);
+
+			if (n.id.equals(this.info.id)) 
+			{
+				this.hashtable.put(id,data);
+			}
+			else
+			{
+				Request.store(n, key,data);
+			}
+		}
+		catch (Exception e) { }
+	}
+
+	public String get()
+	{
+		return null;
 	}
 }

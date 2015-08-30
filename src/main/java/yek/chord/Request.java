@@ -61,7 +61,15 @@ public class Request {
 
 	public static void notify(NodeInfo s, NodeInfo i)
 	{
-		String message = "notify "+i.ip + " "+i.id.toString();
+		String message = "notify " + i.ip + " " + i.id.toString();
+
+		make(s,message);
+	}
+
+	public static void store(NodeInfo s, String key, String data)
+	{
+
+		String message = "store " + Hash.base64(key) + " " + Hash.base64(data);
 
 		make(s,message);
 	}
