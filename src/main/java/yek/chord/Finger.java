@@ -5,5 +5,8 @@ public class Finger {
 	int interval;
 	int start;
 
-	public Finger(){}
+	public Finger()
+	{
+		this.node = null;
+	}
 }

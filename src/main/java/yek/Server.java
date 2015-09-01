@@ -36,7 +36,7 @@ public class Server implements Runnable {
 		{
 			InetAddress addr = InetAddress.getLocalHost();
 
-			String ip = "192.168.0.101";
+			String ip = "192.168.0.103";
 			System.out.println(ip);
 
 			Hash h = new Hash();

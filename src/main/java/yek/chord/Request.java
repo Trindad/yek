@@ -54,6 +54,11 @@ public class Request {
 
 		String[] p = answer.split(" ");
 
+		if (p.length < 2) 
+		{
+			return null;
+		}
+
 		NodeInfo node = new NodeInfo(new BigInteger(p[1]), p[0]);
 
 		return node;

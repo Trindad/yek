@@ -53,7 +53,7 @@ public class Node {
 	public void create()
 	{
 		routingTable.successor = this.info;
-		routingTable.predecessor = this.info;
+		routingTable.predecessor = null;
 	}
 
 	public void join(NodeInfo n)
@@ -67,19 +67,27 @@ public class Node {
 		System.out.println("Stabilizing...");
 		NodeInfo s = this.routingTable.successor;
 
-		if (s == null) {
+		if (s == null) 
+		{
 			return;
 		}
 
 		NodeInfo x = Request.predecessor(s);
 
-		if (x.id.compareTo(this.info.id) > 0 && x.id.compareTo(s.id) < 0)
+		if( x != null)
 		{
-			this.routingTable.successor = x;
-			s = x;
+			if (s.id.equals(this.info.id) || (x.id.compareTo(this.info.id) > 0 && x.id.compareTo(s.id) < 0))
+			{
+				this.routingTable.successor = x;
+				s = x;
+			}
 		}
 
-		Request.notify(s, this.info);
+		if (!s.id.equals(this.info.id)) 
+		{
+			Request.notify(s, this.info);
+		}
+
 	}
 
 	public void notify(NodeInfo n)

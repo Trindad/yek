@@ -70,6 +70,11 @@ class Response implements Runnable {
   {
     NodeInfo n = this.node.routingTable.predecessor;
 
+    if (n == null) 
+    {
+      return "";
+    }
+
     return n.ip + " " + n.id.toString();
   }
 
