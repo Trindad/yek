@@ -144,7 +144,7 @@ public class Node {
 			BigInteger toFind = new BigInteger(n.toString());
 			toFind = toFind.add((new BigInteger("2")).pow(i)).remainder((new BigInteger("2")).pow(160));
 
-			this.routingTable.fingerTable[i].node = findSuccessor(toFind.toString())
+			this.routingTable.fingerTable[i].node = findSuccessor(toFind);
 		}
 	}
 }
