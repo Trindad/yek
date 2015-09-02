@@ -36,7 +36,7 @@ public class Server implements Runnable {
 		{
 			InetAddress addr = InetAddress.getLocalHost();
 
-			String ip = "192.168.0.103";
+			String ip = Server.getIpAddress();
 			System.out.println(ip);
 
 			Hash h = new Hash();
@@ -108,4 +108,30 @@ public class Server implements Runnable {
 
 		// connectToInitialServers();
 	}
+
+	public static String getIpAddress() {
+		String eth0 = "";
+		String wlan0 = "";
+
+    try {
+      for (Enumeration en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+        NetworkInterface intf = (NetworkInterface) en.nextElement();
+        if ("eth0".compareTo(intf.getName()) == 0 || "wlan0".compareTo(intf.getName()) == 0) {
+	        Enumeration<InetAddress> inetAddresses = intf.getInetAddresses();
+	        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+	        		if (!inetAddress.isLinkLocalAddress() && !inetAddress.isLoopbackAddress()) {
+	        			if (intf.getName() == "eth0") {
+	            		eth0 = inetAddress.toString().replace("/", "");
+	        			} else {
+	        				wlan0 = inetAddress.toString().replace("/", "");
+	        			}
+	        		}
+	        }
+	      }
+      }
+    } catch (SocketException ex) {
+      // Log.e("Socket exception in GetIP Address of Utilities", ex.toString());
+    }
+    return wlan0.length() > 0 ? wlan0 : eth0;
+  }
 }
