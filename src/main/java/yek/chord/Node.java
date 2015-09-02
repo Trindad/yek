@@ -20,8 +20,8 @@ public class Node {
 			return this.routingTable.successor;
 		}
 
-		// NodeInfo n = closestPrecedingNode(id);
-		NodeInfo n = this.routingTable.successor;
+		NodeInfo n = closestPrecedingNode(id);
+		// NodeInfo n = this.routingTable.successor;
 		if (n.id.equals(this.info.id)) {
 			return n;
 		}
@@ -30,7 +30,7 @@ public class Node {
 	}
 
 	public NodeInfo closestPrecedingNode(BigInteger id)
-	{	
+	{
 		try {
 			for (int i = 159; i >= 0 ; i--)
 			{
@@ -61,6 +61,7 @@ public class Node {
 	{
 		this.routingTable.predecessor = null;
 		this.routingTable.successor = Request.findSuccessor(n,this.info.id);
+		this.fillFingerTable();
 	}
 
 	public void stabilize()
@@ -68,7 +69,7 @@ public class Node {
 		System.out.println("Stabilizing...");
 		NodeInfo s = this.routingTable.successor;
 
-		if (s == null) 
+		if (s == null)
 		{
 			return;
 		}
@@ -84,7 +85,7 @@ public class Node {
 			}
 		}
 
-		if (!s.id.equals(this.info.id)) 
+		if (!s.id.equals(this.info.id))
 		{
 			Request.notify(s, this.info);
 		}
@@ -94,7 +95,7 @@ public class Node {
 	public void notify(NodeInfo n)
 	{
 		System.out.println("new predecessor "+n.id);
-		
+
 		if (this.routingTable.predecessor == null || (n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) )
 		{
 			System.out.println("not.......................");
@@ -115,7 +116,7 @@ public class Node {
 			BigInteger id = h.sha1(key);
 			NodeInfo n = findSuccessor(id);
 
-			if (n.id.equals(this.info.id)) 
+			if (n.id.equals(this.info.id))
 			{
 				this.hashtable.put(id,data);
 			}
@@ -130,5 +131,20 @@ public class Node {
 	public String get()
 	{
 		return null;
+	}
+
+	public void fillFingerTable()
+	{
+		BigInteger n = this.info.id;
+
+		for (int i = 0; i < 160; i++)
+		{
+
+			this.routingTable.fingerTable[i] = new Finger();
+			BigInteger toFind = new BigInteger(n.toString());
+			toFind = toFind.add((new BigInteger("2")).pow(i)).remainder((new BigInteger("2")).pow(160));
+
+			this.routingTable.fingerTable[i].node = findSuccessor(toFind.toString())
+		}
 	}
 }

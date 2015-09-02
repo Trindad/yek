@@ -90,17 +90,12 @@ public class Server implements Runnable {
 		(new Thread(new BackgroundWorker(this.node))).start();
 
 		// try {
-		// 	String ip = "192.168.0.104";
+		// 	String ip = "192.168.0.103";
 		// 	Hash h = new Hash();
 		// 	BigInteger b = h.sha1(ip);
 		// 	NodeInfo n = new NodeInfo(b, ip);
 
 		// 	this.node.join(n);
-
-		// 	NodeInfo me = this.node.info;
-		// 	Request.notify(this.node.routingTable.successor, me);
-		// 	NodeInfo pred = Request.predecessor(this.node.routingTable.successor);
-		// 	System.out.println(pred.ip);
 
 		// } catch (Exception e) {
 		// 	e.printStackTrace();
