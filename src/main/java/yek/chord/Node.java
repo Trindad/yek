@@ -16,11 +16,12 @@ public class Node {
 
 	public NodeInfo findSuccessor(BigInteger id)
 	{
-		if (this.info.id.compareTo(id) > 0 && this.routingTable.successor.id.compareTo(id) <= 0) {
+		if (id.compareTo(this.info.id) > 0 && id.compareTo(this.routingTable.successor.id) <= 0) {
 			return this.routingTable.successor;
 		}
 
-		NodeInfo n = closestPrecedingNode(id);
+		// NodeInfo n = closestPrecedingNode(id);
+		NodeInfo n = this.routingTable.successor;
 		if (n.id.equals(this.info.id)) {
 			return n;
 		}
@@ -92,8 +93,11 @@ public class Node {
 
 	public void notify(NodeInfo n)
 	{
+		System.out.println("new predecessor "+n.id);
+		
 		if (this.routingTable.predecessor == null || (n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) )
 		{
+			System.out.println("not.......................");
 			this.routingTable.predecessor = n;
 		}
 	}

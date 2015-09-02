@@ -14,7 +14,7 @@ public class Hash {
 	    d.reset();
 	    d.update(str.getBytes());
 
-	    return new BigInteger(d.digest());
+	    return new BigInteger(1,d.digest());
 	}
 
 	public static String base64(String str)
