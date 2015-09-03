@@ -6,12 +6,14 @@ public class Node {
 	public NodeInfo info;
 	public RoutingTable routingTable;
 	public Hashtable<BigInteger, String> hashtable;
+	private boolean isUpdatingFingerTable;
 
 	public Node(String ip, BigInteger id)
 	{
 		this.info = new NodeInfo(id, ip);
 		this.routingTable = new RoutingTable();
 		this.hashtable = new Hashtable<BigInteger, String>();
+		this.isUpdatingFingerTable = false;
 	}
 
 	public NodeInfo findSuccessor(BigInteger id)
@@ -20,9 +22,19 @@ public class Node {
 			return this.routingTable.successor;
 		}
 
-		NodeInfo n = closestPrecedingNode(id);
-		// NodeInfo n = this.routingTable.successor;
-		if (n.id.equals(this.info.id)) {
+		NodeInfo n = null;
+
+		if (isUpdatingFingerTable) 
+		{
+			n = this.routingTable.successor;
+		}
+		else
+		{
+			n = closestPrecedingNode(id);
+		}
+
+		if (n.id.equals(this.info.id)) 
+		{
 			return n;
 		}
 
@@ -152,6 +164,7 @@ public class Node {
 
 	public void fillFingerTable()
 	{
+		isUpdatingFingerTable = true;
 		BigInteger n = this.info.id;
 
 		for (int i = 0; i < 160; i++)
@@ -163,5 +176,7 @@ public class Node {
 
 			this.routingTable.fingerTable[i].node = findSuccessor(toFind);
 		}
+
+		isUpdatingFingerTable = false;
 	}
 }
