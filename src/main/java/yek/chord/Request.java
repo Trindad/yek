@@ -78,4 +78,12 @@ public class Request {
 
 		make(s,message);
 	}
+
+	public static String get(NodeInfo s, String key)
+	{
+
+		String message = "get " + Hash.base64(key);
+
+		return Hash.base64Decode( make(s,message) );
+	}
 }

@@ -128,9 +128,26 @@ public class Node {
 		catch (Exception e) { }
 	}
 
-	public String get()
+	public String get(String key)
 	{
-		return null;
+		try{
+			Hash h = new Hash();
+
+			BigInteger id = h.sha1(key);
+			NodeInfo n = findSuccessor(id);
+
+			if (n.id.equals(this.info.id))
+			{
+				return this.hashtable.get(id);
+			}
+			else
+			{
+				return Request.get(n, key);
+			}
+		}
+		catch (Exception e) { }
+
+		return "";
 	}
 
 	public void fillFingerTable()
