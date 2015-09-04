@@ -142,7 +142,8 @@ public class Node {
 
 	public String get(String key)
 	{
-		try{
+		try
+		{
 			Hash h = new Hash();
 
 			BigInteger id = h.sha1(key);
@@ -179,4 +180,48 @@ public class Node {
 
 		isUpdatingFingerTable = false;
 	}
+
+	public void update(String key,String data)
+	{
+		try{
+			Hash h = new Hash();
+
+			BigInteger id = h.sha1(key);
+			NodeInfo n = findSuccessor(id);
+
+			if (n.id.equals(this.info.id))
+			{
+				this.hashtable.replace(id,data);
+			}
+			else
+			{
+				Request.update(n, key,data);
+			}
+		}
+		catch (Exception e) { }
+	}
+
+	public void delete(String key)
+	{
+		try{
+			Hash h = new Hash();
+
+			BigInteger id = h.sha1(key);
+			NodeInfo n = findSuccessor(id);
+
+			if (n.id.equals(this.info.id))
+			{
+				this.hashtable.remove(id);
+			}
+			else
+			{
+				Request.delete(n, key);
+			}
+		}
+		catch (Exception e) { }
+	}
+
+
+
+
 }

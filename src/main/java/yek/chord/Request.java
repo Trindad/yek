@@ -79,6 +79,22 @@ public class Request {
 		make(s,message);
 	}
 
+	public static void update(NodeInfo s, String key, String data)
+	{
+
+		String message = "update " + Hash.base64(key) + " " + Hash.base64(data);
+
+		make(s,message);
+	}
+
+	public static void delete(NodeInfo s, String key)
+	{
+
+		String message = "delete " + Hash.base64(key);
+
+		make(s,message);
+	}
+
 	public static String get(NodeInfo s, String key)
 	{
 

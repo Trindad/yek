@@ -44,6 +44,12 @@ class Response implements Runnable {
         case "store":
           response = this.store(parts[1], parts[2]);
           break;
+        case "update":
+          response = this.update(parts[1], parts[2]);
+          break;
+        case "delete":
+          response = this.delete(parts[1]);
+          break;
         case "get":
           response = this.get(parts[1]);
           break;
@@ -96,6 +102,25 @@ class Response implements Runnable {
     String data = Hash.base64Decode(dataBase64);
 
     this.node.put(key,data);
+
+    return "";
+  }
+
+  private String update(String keyBase64, String dataBase64)
+  {
+    String key = Hash.base64Decode(keyBase64);
+    String data = Hash.base64Decode(dataBase64);
+
+    this.node.update(key,data);
+
+    return "";
+  }
+
+  private String delete(String keyBase64)
+  {
+    String key = Hash.base64Decode(keyBase64);
+
+    this.node.delete(key);
 
     return "";
   }
