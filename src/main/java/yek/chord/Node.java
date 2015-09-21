@@ -221,7 +221,16 @@ public class Node {
 		catch (Exception e) { }
 	}
 
-
+	public void checkPredecessor()
+	{
+		try {
+			Request.make(this.routingTable.predecessor, "heartbeat");
+		} catch(IOException e) {
+			this.routingTable.predecessor = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }
