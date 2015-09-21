@@ -21,8 +21,8 @@ public class BackgroundWorker implements Runnable {
 			if (this.node.routingTable.predecessor != null) {
 				System.out.println("predecessor "+this.node.routingTable.predecessor.ip);
 			}
-			this.node.stabilize();
 			this.node.checkPredecessor();
+			this.node.stabilize();
 			start();
 		} catch (Exception e) {
 			e.printStackTrace();

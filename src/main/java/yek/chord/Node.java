@@ -1,6 +1,7 @@
 package yek.chord;
 import java.math.BigInteger;
 import java.util.Hashtable;
+import java.io.IOException;
 
 public class Node {
 	public NodeInfo info;
@@ -224,11 +225,12 @@ public class Node {
 	public void checkPredecessor()
 	{
 		try {
-			Request.make(this.routingTable.predecessor, "heartbeat");
+			Request._make(this.routingTable.predecessor, "heartbeat");
 		} catch(IOException e) {
+			System.out.println("nulo!");
 			this.routingTable.predecessor = null;
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
