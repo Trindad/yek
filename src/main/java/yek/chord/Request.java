@@ -22,7 +22,7 @@ import java.io.*;
 public class Request {
 	public static String _make(NodeInfo n, String message) throws Exception {
 		System.out.println(message);
-		Socket socket = new Socket(n.ip, 9345);
+		Socket socket = new Socket(n.ip, n.port);
 		OutputStream os = socket.getOutputStream();
         OutputStreamWriter osw = new OutputStreamWriter(os);
         BufferedWriter bw = new BufferedWriter(osw);
@@ -60,7 +60,7 @@ public class Request {
 
 		String[] p = answer.split(" ");//retorna ip e id
 
-		NodeInfo node = new NodeInfo(new BigInteger(p[1]), p[0]);
+		NodeInfo node = new NodeInfo(new BigInteger(p[0]), p[1], Integer.parseInt(p[2]));
 
 		return node;
 	}
@@ -73,19 +73,20 @@ public class Request {
 
 		String[] p = answer.split(" ");
 
-		if (p.length < 2) 
+		if (p.length < 2)
 		{
 			return null;
 		}
 
-		NodeInfo node = new NodeInfo(new BigInteger(p[1]), p[0]);
+		//                                          ID      IP           PORT
+		NodeInfo node = new NodeInfo(new BigInteger(p[0]), p[1], Integer.parseInt(p[2]));
 
 		return node;
 	}
 
 	public static void notify(NodeInfo s, NodeInfo i)
 	{
-		String message = "notify " + i.ip + " " + i.id.toString();
+		String message = "notify " + i.id.toString() + " " + i.ip + " " + i.port;
 
 		make(s,message);
 	}

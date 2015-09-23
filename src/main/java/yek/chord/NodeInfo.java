@@ -17,13 +17,15 @@ package yek.chord;
 import java.math.BigInteger;
 
 public class NodeInfo {
-	
+
 	public BigInteger id;
 	public String ip;
+  public int port;
 
-	public NodeInfo(BigInteger id, String ip)
+	public NodeInfo(BigInteger id, String ip, int port)
 	{
 		this.ip = ip;
-		this.id = id;
+    this.id = id;
+		this.port = port;
 	}
 }

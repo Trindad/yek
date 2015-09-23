@@ -24,26 +24,9 @@ import java.util.concurrent.*;
 
 public class Server implements Runnable {
 	public ServerSocket server;
+	int port;
 	private Node node;
 	private ExecutorService executorService = Executors.newFixedThreadPool(20);
-
-	private NodeInfo []initialServers;
-
-	public Server()
-	{
-		initialServers = new NodeInfo[4];
-		String []ips = {"192.168.0.107","192.168.0.108"};
-		Hash h = new Hash();
-
-		for (int i = 0; i < ips.length; i++) {
-			try
-			{
-				BigInteger b = h.sha1(ips[i]);
-				initialServers[i] = new NodeInfo(b, ips[i]);
-			}
-			catch(Exception e){}
-		}
-	}
 
 	public Node initNode()
 	{
@@ -55,10 +38,10 @@ public class Server implements Runnable {
 			System.out.println(ip);
 
 			Hash h = new Hash();
-			BigInteger b = h.sha1(ip);
+			BigInteger b = h.sha1(ip + "/" + this.port);
 		    System.out.println( b.toString() );
 
-			Node node = new Node(ip,b);
+			Node node = new Node(ip, this.port, b);
 
 			return node;
 		}
@@ -77,9 +60,7 @@ public class Server implements Runnable {
 	private void initSocketServer()
 	{
 		try {
-			ServerSocket server = new ServerSocket(9345);
-
-			System.out.println("Listening on port 9345");
+			System.out.println("Listening on port " + this.port);
 
 			while (true) {
 				Socket s = server.accept();
@@ -98,6 +79,14 @@ public class Server implements Runnable {
 
 	public void start()
 	{
+		try {
+			this.server = new ServerSocket(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		this.port = server.getLocalPort();
+
 		this.node = initNode();
 		this.node.create();
 
@@ -105,10 +94,11 @@ public class Server implements Runnable {
 		(new Thread(new BackgroundWorker(this.node))).start();
 
 		// try {
-		// 	String ip = "192.168.0.103";
+		// 	String ip = "192.168.0.107";
+		// 	int port = 34724;
 		// 	Hash h = new Hash();
-		// 	BigInteger b = h.sha1(ip);
-		// 	NodeInfo n = new NodeInfo(b, ip);
+		// 	BigInteger b = h.sha1(ip + "/" + port);
+		// 	NodeInfo n = new NodeInfo(b, ip, port);
 
 		// 	this.node.join(n);
 
@@ -116,7 +106,7 @@ public class Server implements Runnable {
 		// 	e.printStackTrace();
 		// }
 
-		// connectToInitialServers();
+		connectToInitialServers();
 	}
 
 	public static String getIpAddress() {

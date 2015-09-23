@@ -24,9 +24,9 @@ public class Node {
 	public Hashtable<BigInteger, String> hashtable;
 	private boolean isUpdatingFingerTable;
 
-	public Node(String ip, BigInteger id)
+	public Node(String ip, int port, BigInteger id)
 	{
-		this.info = new NodeInfo(id, ip);
+		this.info = new NodeInfo(id, ip, port);
 		this.routingTable = new RoutingTable();
 		this.hashtable = new Hashtable<BigInteger, String>();
 		this.isUpdatingFingerTable = false;
@@ -40,7 +40,7 @@ public class Node {
 
 		NodeInfo n = null;
 
-		if (isUpdatingFingerTable) 
+		if (isUpdatingFingerTable)
 		{
 			n = this.routingTable.successor;
 		}
@@ -49,7 +49,7 @@ public class Node {
 			n = closestPrecedingNode(id);
 		}
 
-		if (n.id.equals(this.info.id)) 
+		if (n.id.equals(this.info.id))
 		{
 			return n;
 		}

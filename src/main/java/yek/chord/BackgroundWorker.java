@@ -32,9 +32,9 @@ public class BackgroundWorker implements Runnable {
 	{
 		try {
 			Thread.sleep(10000);
-			System.out.println("successor "+this.node.routingTable.successor.ip);
+			System.out.println("successor "+this.node.routingTable.successor.ip + "/" + this.node.routingTable.successor.port);
 			if (this.node.routingTable.predecessor != null) {
-				System.out.println("predecessor "+this.node.routingTable.predecessor.ip);
+				System.out.println("predecessor "+this.node.routingTable.predecessor.ip + "/" + this.node.routingTable.predecessor.port);
 			}
 			this.node.checkPredecessor();
 			this.node.stabilize();
