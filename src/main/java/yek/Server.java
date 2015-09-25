@@ -88,23 +88,23 @@ public class Server implements Runnable {
 		this.port = server.getLocalPort();
 
 		this.node = initNode();
-		this.node.create();
+		// this.node.create();
 
 		(new Thread(this)).start();
 		(new Thread(new BackgroundWorker(this.node))).start();
 
-		// try {
-		// 	String ip = "192.168.0.107";
-		// 	int port = 34724;
-		// 	Hash h = new Hash();
-		// 	BigInteger b = h.sha1(ip + "/" + port);
-		// 	NodeInfo n = new NodeInfo(b, ip, port);
+		try {
+			String ip = "192.168.0.105";
+			int port = 37513;
+			Hash h = new Hash();
+			BigInteger b = h.sha1(ip + "/" + port);
+			NodeInfo n = new NodeInfo(b, ip, port);
 
-		// 	this.node.join(n);
+			this.node.join(n);
 
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		connectToInitialServers();
 	}

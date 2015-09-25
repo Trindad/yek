@@ -106,10 +106,22 @@ public class Node {
 
 		if( x != null)
 		{
-			if (s.id.equals(this.info.id) || (x.id.compareTo(this.info.id) > 0 && x.id.compareTo(s.id) < 0))
+			if (s.id.equals(this.info.id))
 			{
 				this.routingTable.successor = x;
 				s = x;
+			}
+
+			if (this.info.id.compareTo(s.id) > 0) {
+				if (x.id.compareTo(s.id) < 0 || x.id.compareTo(this.info.id) > 0) {
+					this.routingTable.successor = x;
+					s = x;		
+				}
+			} else {
+				if (x.id.compareTo(s.id) < 0 && x.id.compareTo(this.info.id) > 0) {
+					this.routingTable.successor = x;
+					s = x;		
+				}
 			}
 		}
 
@@ -124,11 +136,38 @@ public class Node {
 	{
 		System.out.println("new predecessor "+n.id);
 
-		if (this.routingTable.predecessor == null || (n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) )
+		if (this.routingTable.predecessor == null) 
 		{
 			System.out.println("not.......................");
 			this.routingTable.predecessor = n;
+
+			return;
 		}
+
+		if (n.id.compareTo(this.routingTable.predecessor.id) > 0) {
+			System.out.println("maior que predecessor");
+		}
+
+		if (n.id.compareTo(this.info.id) < 0) {
+			System.out.println("menor que sucessor");
+		}
+
+		if (this.routingTable.predecessor.id.compareTo(this.info.id) > 0) 
+		{
+			if ((n.id.compareTo(this.routingTable.predecessor.id) > 0 || n.id.compareTo(this.info.id) < 0) )
+			{
+				System.out.println("not.......................");
+				this.routingTable.predecessor = n;
+			}
+
+		} else {
+			if ((n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) )
+			{
+				System.out.println("not.......................");
+				this.routingTable.predecessor = n;
+			}
+		}
+
 	}
 
 	public void fixFingers()
@@ -153,7 +192,10 @@ public class Node {
 				Request.store(n, key,data);
 			}
 		}
-		catch (Exception e) { }
+		catch (Exception e) 
+		{ 
+			e.printStackTrace();
+		}
 	}
 
 	public String get(String key)
@@ -174,7 +216,10 @@ public class Node {
 				return Request.get(n, key);
 			}
 		}
-		catch (Exception e) { }
+		catch (Exception e) 
+		{ 
+			e.printStackTrace();
+		}
 
 		return "";
 	}
@@ -214,7 +259,11 @@ public class Node {
 				Request.update(n, key,data);
 			}
 		}
-		catch (Exception e) { }
+		catch (Exception e) 
+		{
+
+			e.printStackTrace();
+		}
 	}
 
 	public void delete(String key)
@@ -234,7 +283,7 @@ public class Node {
 				Request.delete(n, key);
 			}
 		}
-		catch (Exception e) { }
+		catch (Exception e) { e.printStackTrace(); }
 	}
 
 	public void checkPredecessor()
@@ -245,7 +294,7 @@ public class Node {
 			System.out.println("nulo!");
 			this.routingTable.predecessor = null;
 		} catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
