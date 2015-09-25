@@ -17,10 +17,18 @@ import yek.*;
 
 class Main {
 	public static void main(String[] args) {
-		System.out.println("YEK");
+		// for(int i = 0; i < args.length;i++)
+		if (args.length < 1) 
+		{
+			System.out.println("Wrong number of arguments");
+			System.exit(1);
+		}
+		// System.out.println(args[0]);
+
+		boolean initial = args[0].equals("--initial");
 
 		Server s = new Server();
 
-		s.start();
+		s.start(initial,args[0]);
 	}
 }
