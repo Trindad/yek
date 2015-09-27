@@ -209,10 +209,15 @@ public class Node {
 
 			if (n.id.equals(this.info.id))
 			{
-				return this.hashtable.get(id);
+				System.out.println("FUCK");
+				if (this.hashtable.containsKey(id)) 
+				{
+					return this.hashtable.get(id);
+				}
 			}
 			else
 			{
+				System.out.println("fdnjnfe \n");
 				return Request.get(n, key);
 			}
 		}

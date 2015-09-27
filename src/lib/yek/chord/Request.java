@@ -21,7 +21,7 @@ import java.io.*;
 
 public class Request {
 	public static String _make(NodeInfo n, String message) throws Exception {
-		System.out.println(message);
+		// System.out.println(message);
 		Socket socket = new Socket(n.ip, n.port);
 		OutputStream os = socket.getOutputStream();
         OutputStreamWriter osw = new OutputStreamWriter(os);
@@ -34,7 +34,7 @@ public class Request {
 
 		while (!in.ready()) {}
 		String m = in.readLine(); // Read one line and output it
-		System.out.println(m);
+		// System.out.println(m);
 		in.close();
 		return m;
 	}
