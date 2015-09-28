@@ -17,11 +17,18 @@ package yek.chord;
 
 public class RoutingTable {
 
-	public NodeInfo successor;
-	public NodeInfo predecessor;
+	public NodeInfo []successorList; 
+	public NodeInfo []predecessorList;
 	public Finger []fingerTable;
 
 	public RoutingTable() {
 		this.fingerTable = new Finger[160];
+		this.predecessorList = new NodeInfo[4];
+		this.successorList = new NodeInfo[4];
+
+		for (int i = 0; i < 4 ;i++ ) {
+			successorList[i] = null;
+			predecessorList[i] = null;
+		}
 	}
 }

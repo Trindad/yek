@@ -93,7 +93,7 @@ class Response implements Runnable {
 
   private String predecessor()
   {
-    NodeInfo n = this.node.routingTable.predecessor;
+    NodeInfo n = this.node.routingTable.predecessorList[0];
 
     if (n == null)
     {

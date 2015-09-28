@@ -34,15 +34,15 @@ public class Node {
 
 	public NodeInfo findSuccessor(BigInteger id)
 	{
-		if (id.compareTo(this.info.id) > 0 && id.compareTo(this.routingTable.successor.id) <= 0) {
-			return this.routingTable.successor;
+		if (id.compareTo(this.info.id) > 0 && id.compareTo(this.routingTable.successorList[0].id) <= 0) {
+			return this.routingTable.successorList[0];
 		}
 
 		NodeInfo n = null;
 
 		if (isUpdatingFingerTable)
 		{
-			n = this.routingTable.successor;
+			n = this.routingTable.successorList[0];
 		}
 		else
 		{
@@ -81,21 +81,21 @@ public class Node {
 
 	public void create()
 	{
-		routingTable.successor = this.info;
-		routingTable.predecessor = null;
+		routingTable.successorList[0] = this.info;
+		routingTable.predecessorList[0] = null;
 	}
 
 	public void join(NodeInfo n)
 	{
-		this.routingTable.predecessor = null;
-		this.routingTable.successor = Request.findSuccessor(n,this.info.id);
+		this.routingTable.predecessorList[0] = null;
+		this.routingTable.successorList[0] = Request.findSuccessor(n,this.info.id);
 		this.fillFingerTable();
 	}
 
 	public void stabilize()
 	{
 		System.out.println("Stabilizing...");
-		NodeInfo s = this.routingTable.successor;
+		NodeInfo s = this.routingTable.successorList[0];
 
 		if (s == null)
 		{
@@ -108,18 +108,18 @@ public class Node {
 		{
 			if (s.id.equals(this.info.id))
 			{
-				this.routingTable.successor = x;
+				this.routingTable.successorList[0] = x;
 				s = x;
 			}
 
 			if (this.info.id.compareTo(s.id) > 0) {
 				if (x.id.compareTo(s.id) < 0 || x.id.compareTo(this.info.id) > 0) {
-					this.routingTable.successor = x;
+					this.routingTable.successorList[0] = x;
 					s = x;		
 				}
 			} else {
 				if (x.id.compareTo(s.id) < 0 && x.id.compareTo(this.info.id) > 0) {
-					this.routingTable.successor = x;
+					this.routingTable.successorList[0] = x;
 					s = x;		
 				}
 			}
@@ -134,37 +134,25 @@ public class Node {
 
 	public void notify(NodeInfo n)
 	{
-		System.out.println("new predecessor "+n.id);
 
-		if (this.routingTable.predecessor == null) 
+		if (this.routingTable.predecessorList[0] == null) 
 		{
-			System.out.println("not.......................");
-			this.routingTable.predecessor = n;
+			this.routingTable.predecessorList[0] = n;
 
 			return;
 		}
 
-		if (n.id.compareTo(this.routingTable.predecessor.id) > 0) {
-			System.out.println("maior que predecessor");
-		}
-
-		if (n.id.compareTo(this.info.id) < 0) {
-			System.out.println("menor que sucessor");
-		}
-
-		if (this.routingTable.predecessor.id.compareTo(this.info.id) > 0) 
+		if (this.routingTable.predecessorList[0].id.compareTo(this.info.id) > 0) 
 		{
-			if ((n.id.compareTo(this.routingTable.predecessor.id) > 0 || n.id.compareTo(this.info.id) < 0) )
+			if ((n.id.compareTo(this.routingTable.predecessorList[0].id) > 0 || n.id.compareTo(this.info.id) < 0) )
 			{
-				System.out.println("not.......................");
-				this.routingTable.predecessor = n;
+				this.routingTable.predecessorList[0] = n;
 			}
 
 		} else {
-			if ((n.id.compareTo(this.routingTable.predecessor.id) > 0 && n.id.compareTo(this.info.id) < 0) )
+			if ((n.id.compareTo(this.routingTable.predecessorList[0].id) > 0 && n.id.compareTo(this.info.id) < 0) )
 			{
-				System.out.println("not.......................");
-				this.routingTable.predecessor = n;
+				this.routingTable.predecessorList[0] = n;
 			}
 		}
 
@@ -209,7 +197,6 @@ public class Node {
 
 			if (n.id.equals(this.info.id))
 			{
-				System.out.println("FUCK");
 				if (this.hashtable.containsKey(id)) 
 				{
 					return this.hashtable.get(id);
@@ -217,7 +204,6 @@ public class Node {
 			}
 			else
 			{
-				System.out.println("fdnjnfe \n");
 				return Request.get(n, key);
 			}
 		}
@@ -294,10 +280,9 @@ public class Node {
 	public void checkPredecessor()
 	{
 		try {
-			Request._make(this.routingTable.predecessor, "heartbeat");
+			Request._make(this.routingTable.predecessorList[0], "heartbeat");
 		} catch(IOException e) {
-			System.out.println("nulo!");
-			this.routingTable.predecessor = null;
+			this.routingTable.predecessorList[0] = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
