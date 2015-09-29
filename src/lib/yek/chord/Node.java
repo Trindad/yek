@@ -68,9 +68,14 @@ public class Node {
 
 				NodeInfo finger = this.routingTable.fingerTable[i].node;
 
-				if (this.info.id.compareTo(finger.id) > 0 && finger.id.compareTo(id) < 0)
-				{
-					return finger;
+				if (this.info.id.compareTo(id) > 0) {
+					if (id.compareTo(finger.id) < 0 || id.compareTo(this.info.id) > 0) {
+						return finger;
+					}
+				} else {
+					if (id.compareTo(finger.id) < 0 && id.compareTo(this.info.id) > 0) {
+						return finger;
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -197,6 +202,7 @@ public class Node {
 
 			if (n.id.equals(this.info.id))
 			{
+				System.out.println("FUCK");
 				if (this.hashtable.containsKey(id)) 
 				{
 					return this.hashtable.get(id);
@@ -204,6 +210,7 @@ public class Node {
 			}
 			else
 			{
+				System.out.println("fdnjnfe \n");
 				return Request.get(n, key);
 			}
 		}
