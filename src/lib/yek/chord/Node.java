@@ -69,11 +69,11 @@ public class Node {
 				NodeInfo finger = this.routingTable.fingerTable[i].node;
 
 				if (this.info.id.compareTo(id) > 0) {
-					if (id.compareTo(finger.id) < 0 || id.compareTo(this.info.id) > 0) {
+					if (finger.id.compareTo(id) < 0 || finger.id.compareTo(this.info.id) > 0) {
 						return finger;
 					}
 				} else {
-					if (id.compareTo(finger.id) < 0 && id.compareTo(this.info.id) > 0) {
+					if (finger.id.compareTo(id) < 0 && finger.id.compareTo(this.info.id) > 0) {
 						return finger;
 					}
 				}
@@ -120,12 +120,12 @@ public class Node {
 			if (this.info.id.compareTo(s.id) > 0) {
 				if (x.id.compareTo(s.id) < 0 || x.id.compareTo(this.info.id) > 0) {
 					this.routingTable.successorList[0] = x;
-					s = x;		
+					s = x;
 				}
 			} else {
 				if (x.id.compareTo(s.id) < 0 && x.id.compareTo(this.info.id) > 0) {
 					this.routingTable.successorList[0] = x;
-					s = x;		
+					s = x;
 				}
 			}
 		}
@@ -140,14 +140,14 @@ public class Node {
 	public void notify(NodeInfo n)
 	{
 
-		if (this.routingTable.predecessorList[0] == null) 
+		if (this.routingTable.predecessorList[0] == null)
 		{
 			this.routingTable.predecessorList[0] = n;
 
 			return;
 		}
 
-		if (this.routingTable.predecessorList[0].id.compareTo(this.info.id) > 0) 
+		if (this.routingTable.predecessorList[0].id.compareTo(this.info.id) > 0)
 		{
 			if ((n.id.compareTo(this.routingTable.predecessorList[0].id) > 0 || n.id.compareTo(this.info.id) < 0) )
 			{
@@ -185,8 +185,8 @@ public class Node {
 				Request.store(n, key,data);
 			}
 		}
-		catch (Exception e) 
-		{ 
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -203,7 +203,7 @@ public class Node {
 			if (n.id.equals(this.info.id))
 			{
 				System.out.println("FUCK");
-				if (this.hashtable.containsKey(id)) 
+				if (this.hashtable.containsKey(id))
 				{
 					return this.hashtable.get(id);
 				}
@@ -214,8 +214,8 @@ public class Node {
 				return Request.get(n, key);
 			}
 		}
-		catch (Exception e) 
-		{ 
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 
@@ -257,7 +257,7 @@ public class Node {
 				Request.update(n, key,data);
 			}
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 
 			e.printStackTrace();
