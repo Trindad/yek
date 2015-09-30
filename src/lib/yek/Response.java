@@ -44,11 +44,14 @@ class Response implements Runnable {
       String response = "";
 
       switch (parts[0]) {
-        case "successor":
-          response = this.successor(new BigInteger(parts[1]));
+        case "findSuccessor":
+          response = this.findSuccessor(new BigInteger(parts[1]));
           break;
         case "predecessor":
           response = this.predecessor();
+          break;
+        case "successor":
+          response = this.successor();
           break;
         case "notify":
           String ip = parts[2];
@@ -84,7 +87,7 @@ class Response implements Runnable {
     }
   }
 
-  private String successor(BigInteger id)
+  private String findSuccessor(BigInteger id)
   {
     NodeInfo n = this.node.findSuccessor(id);
 
@@ -94,6 +97,18 @@ class Response implements Runnable {
   private String predecessor()
   {
     NodeInfo n = this.node.routingTable.predecessorList[0];
+
+    if (n == null)
+    {
+      return "";
+    }
+
+    return n.id.toString() + " " + n.ip + " " + n.port;
+  }
+
+  private String successor()
+  {
+    NodeInfo n = this.node.routingTable.successorList[0];
 
     if (n == null)
     {

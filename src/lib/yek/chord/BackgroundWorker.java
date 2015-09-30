@@ -37,6 +37,7 @@ public class BackgroundWorker implements Runnable {
 				System.out.println("predecessor "+this.node.routingTable.predecessorList[0].ip + "/" + this.node.routingTable.predecessorList[0].port);
 			}
 			this.node.checkPredecessor();
+			this.node.checkSuccessors();
 			this.node.stabilize();
 			start();
 		} catch (Exception e) {

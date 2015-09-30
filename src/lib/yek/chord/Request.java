@@ -49,12 +49,12 @@ public class Request {
 			e.printStackTrace();
 		}
 
-		return null;
+		return "";
 	}
 
 	public static NodeInfo findSuccessor(NodeInfo n, BigInteger id)
 	{
-		String message = "successor "+id.toString();
+		String message = "findSuccessor "+id.toString();
 
 		String answer = make(n,message);
 
@@ -68,6 +68,25 @@ public class Request {
 	public static NodeInfo predecessor(NodeInfo s)
 	{
 		String message = "predecessor";
+
+		String answer = make(s,message);
+
+		String[] p = answer.split(" ");
+
+		if (p.length < 2)
+		{
+			return null;
+		}
+
+		//                                          ID      IP           PORT
+		NodeInfo node = new NodeInfo(new BigInteger(p[0]), p[1], Integer.parseInt(p[2]));
+
+		return node;
+	}
+
+	public static NodeInfo successor(NodeInfo s)
+	{
+		String message = "successor";
 
 		String answer = make(s,message);
 

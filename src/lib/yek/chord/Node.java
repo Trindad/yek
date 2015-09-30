@@ -14,6 +14,7 @@
 *   limitations under the License.
  */
 package yek.chord;
+import java.util.*;
 import java.math.BigInteger;
 import java.util.Hashtable;
 import java.io.IOException;
@@ -134,7 +135,6 @@ public class Node {
 		{
 			Request.notify(s, this.info);
 		}
-
 	}
 
 	public void notify(NodeInfo n)
@@ -295,5 +295,60 @@ public class Node {
 		}
 	}
 
+	public void checkSuccessors()
+	{
+		try {
+			Request._make(this.routingTable.successorList[0], "heartbeat");
+		} catch(IOException e) {
+			this.routingTable.successorList[0] = this.routingTable.successorList[1];
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
+		// caso especial?
+		if (this.routingTable.successorList[0] == null) {
+			this.routingTable.successorList[0] = this.info;
+			return;
+		}
+
+		NodeInfo []newList = new NodeInfo[4];
+		newList[0] = this.routingTable.successorList[0];
+
+		NodeInfo current = this.routingTable.successorList[0];
+
+		for (int i = 1; i <= 3; i++) {
+			NodeInfo successor = Request.successor(current);
+			if (successor == null || successor.id.compareTo(this.info.id) == 0) {
+				break;
+			}
+
+			boolean found = false;
+			for (int j = 0; j < i; j++) {
+				if (successor.id.compareTo(newList[j].id) == 0) {
+					found = true;
+					break;
+				}
+			}
+
+			if (found) {
+				break;
+			}
+
+			newList[i] = successor;
+			current = successor;
+		}
+		this.routingTable.successorList = newList;
+
+		System.out.println("List of successors:");
+		for (int j = 0; j < 4; j++) {
+			if (this.routingTable.successorList[j] == null) {
+				continue;
+			}
+
+			String ip = this.routingTable.successorList[j].ip;
+			int port = this.routingTable.successorList[j].port;
+			System.out.println(ip + "/" + port);
+		}
+		System.out.println("----------------------------");
+	}
 }
