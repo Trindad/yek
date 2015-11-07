@@ -14,18 +14,12 @@
 *   limitations under the License.
  */
 package yek.chord;
-import java.math.BigInteger;
+import java.util.Queue;
 
-public class NodeInfo {
+class QueueItem {
 
-	public BigInteger id;
-	public String ip;
-	public int port;
-
-	public NodeInfo(BigInteger id, String ip, int port)
-	{
-		this.ip = ip;
-    this.id = id;
-		this.port = port;
-	}
+	NodeInfo inf;
+	String operation;
+	String key;
+	String date;
 }

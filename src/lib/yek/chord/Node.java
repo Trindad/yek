@@ -20,9 +20,11 @@ import java.util.Hashtable;
 import java.io.IOException;
 
 public class Node {
+	
 	public NodeInfo info;
 	public RoutingTable routingTable;
 	public Hashtable<BigInteger, String> hashtable;
+	public Hashtable<BigInteger, Replica> copies;
 	private boolean isUpdatingFingerTable;
 
 	public Node(String ip, int port, BigInteger id)

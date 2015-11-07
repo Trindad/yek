@@ -14,18 +14,18 @@
 *   limitations under the License.
  */
 package yek.chord;
+import java.util.*;
 import java.math.BigInteger;
+import java.util.Hashtable;
+import java.io.IOException;
 
-public class NodeInfo {
+public class Replica {
+	public NodeInfo info;
+	String data;
 
-	public BigInteger id;
-	public String ip;
-	public int port;
-
-	public NodeInfo(BigInteger id, String ip, int port)
+	public Replica(NodeInfo info, String data)
 	{
-		this.ip = ip;
-    this.id = id;
-		this.port = port;
+		this.info = info;
+		this.data = data;
 	}
 }

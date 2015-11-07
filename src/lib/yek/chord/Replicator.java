@@ -14,18 +14,29 @@
 *   limitations under the License.
  */
 package yek.chord;
-import java.math.BigInteger;
+import java.util.Queue;
 
-public class NodeInfo {
+public class Replicator implements Runnable {
+	Node node;
+	Queue<> queue;
 
-	public BigInteger id;
-	public String ip;
-	public int port;
-
-	public NodeInfo(BigInteger id, String ip, int port)
+	public Replicator(Node n)
 	{
-		this.ip = ip;
-    this.id = id;
-		this.port = port;
+		this.node = n;
+	}
+
+	public void run()
+	{
+		while(true)
+		{		
+			try 
+			{
+				Thread.sleep(10000);
+
+				queue.remove();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
