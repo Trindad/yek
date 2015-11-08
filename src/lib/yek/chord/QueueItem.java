@@ -18,8 +18,20 @@ import java.util.Queue;
 
 class QueueItem {
 
-	NodeInfo inf;
 	String operation;
 	String key;
-	String date;
+	String data;
+
+	public QueueItem(String key, String operation, String data)
+	{
+		this.key = key;
+    	this.operation = operation;
+		this.data = data;
+	}
+
+	public QueueItem(String key, String operation)
+	{
+		this.key = key;
+    	this.operation = operation;
+	}
 }

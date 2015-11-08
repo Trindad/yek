@@ -20,19 +20,24 @@ import java.util.Hashtable;
 import java.io.IOException;
 
 public class Node {
-	
+
 	public NodeInfo info;
 	public RoutingTable routingTable;
 	public Hashtable<BigInteger, String> hashtable;
 	public Hashtable<BigInteger, Replica> copies;
 	private boolean isUpdatingFingerTable;
+	public Replicator replicator;
 
 	public Node(String ip, int port, BigInteger id)
 	{
 		this.info = new NodeInfo(id, ip, port);
 		this.routingTable = new RoutingTable();
 		this.hashtable = new Hashtable<BigInteger, String>();
+		this.copies = new Hashtable<BigInteger, Replica>();
 		this.isUpdatingFingerTable = false;
+
+		this.replicator = new Replicator(this);
+		(new Thread(this.replicator)).start();
 	}
 
 	public NodeInfo findSuccessor(BigInteger id)
@@ -102,7 +107,7 @@ public class Node {
 
 	public void stabilize()
 	{
-		System.out.println("Stabilizing...");
+		// System.out.println("Stabilizing...");
 		NodeInfo s = this.routingTable.successorList[0];
 
 		if (s == null)
@@ -165,11 +170,6 @@ public class Node {
 
 	}
 
-	public void fixFingers()
-	{
-
-	}
-
 	public void put(String key,String data)
 	{
 		try{
@@ -186,12 +186,32 @@ public class Node {
 			{
 				Request.store(n, key,data);
 			}
+
+			this.replicator.insert(key,"put",data);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
+
+	public void saveReplica(NodeInfo n, String key,String data)
+	{
+		try{
+			Hash h = new Hash();
+
+			BigInteger id = h.sha1(key);
+
+			Replica r = new Replica(n, data);
+
+			this.copies.put(id,r);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 
 	public String get(String key)
 	{
@@ -204,7 +224,6 @@ public class Node {
 
 			if (n.id.equals(this.info.id))
 			{
-				System.out.println("FUCK");
 				if (this.hashtable.containsKey(id))
 				{
 					return this.hashtable.get(id);
@@ -212,7 +231,6 @@ public class Node {
 			}
 			else
 			{
-				System.out.println("fdnjnfe \n");
 				return Request.get(n, key);
 			}
 		}
@@ -258,6 +276,8 @@ public class Node {
 			{
 				Request.update(n, key,data);
 			}
+
+			this.replicator.insert(key,"update",data);
 		}
 		catch (Exception e)
 		{
@@ -282,6 +302,19 @@ public class Node {
 			{
 				Request.delete(n, key);
 			}
+
+			this.replicator.insert(key,"delete");
+		}
+		catch (Exception e) { e.printStackTrace(); }
+	}
+
+	public void removeReplica(String key)
+	{
+		try{
+			Hash h = new Hash();
+
+			BigInteger id = h.sha1(key);
+			this.copies.remove(id);
 		}
 		catch (Exception e) { e.printStackTrace(); }
 	}
@@ -341,16 +374,16 @@ public class Node {
 		}
 		this.routingTable.successorList = newList;
 
-		System.out.println("List of successors:");
-		for (int j = 0; j < 4; j++) {
-			if (this.routingTable.successorList[j] == null) {
-				continue;
-			}
+		// System.out.println("List of successors:");
+		// for (int j = 0; j < 4; j++) {
+		// 	if (this.routingTable.successorList[j] == null) {
+		// 		continue;
+		// 	}
 
-			String ip = this.routingTable.successorList[j].ip;
-			int port = this.routingTable.successorList[j].port;
-			System.out.println(ip + "/" + port);
-		}
-		System.out.println("----------------------------");
+		// 	String ip = this.routingTable.successorList[j].ip;
+		// 	int port = this.routingTable.successorList[j].port;
+		// 	System.out.println(ip + "/" + port);
+		// }
+		// System.out.println("----------------------------");
 	}
 }

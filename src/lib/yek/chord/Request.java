@@ -141,4 +141,20 @@ public class Request {
 
 		return Hash.base64Decode( make(s,message) );
 	}
+
+	public static void saveReplica(NodeInfo s, NodeInfo i, String data, String key)
+	{
+
+		String message = "saver " + i.id.toString() + " " + i.ip + " " + i.port + " " + Hash.base64(key) + " " + Hash.base64(data);
+
+		make(s,message);
+	}
+
+	public static void removeReplica(NodeInfo s, String key)
+	{
+
+		String message = "remover " + Hash.base64(key);
+
+		make(s,message);
+	}
 }

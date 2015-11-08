@@ -30,18 +30,23 @@ public class BackgroundWorker implements Runnable {
 
 	public void start()
 	{
-		try {
-			Thread.sleep(10000);
-			System.out.println("successor "+this.node.routingTable.successorList[0].ip + "/" + this.node.routingTable.successorList[0].port);
-			if (this.node.routingTable.predecessorList[0] != null) {
-				System.out.println("predecessor "+this.node.routingTable.predecessorList[0].ip + "/" + this.node.routingTable.predecessorList[0].port);
+		while (true)
+		{
+			try {
+				Thread.sleep(10000);
+				System.out.println("successor "+this.node.routingTable.successorList[0].ip + "/" + this.node.routingTable.successorList[0].port);
+				if (this.node.routingTable.predecessorList[0] != null) {
+					System.out.println("predecessor "+this.node.routingTable.predecessorList[0].ip + "/" + this.node.routingTable.predecessorList[0].port);
+				}
+				this.node.checkPredecessor();
+				this.node.checkSuccessors();
+				this.node.stabilize();
+
+				System.out.println("copies size: " + this.node.copies.size());
+				System.out.println("hashtable size: " + this.node.hashtable.size());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			this.node.checkPredecessor();
-			this.node.checkSuccessors();
-			this.node.stabilize();
-			start();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }

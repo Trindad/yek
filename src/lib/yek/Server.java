@@ -64,7 +64,7 @@ public class Server implements Runnable {
 
 			while (true) {
 				Socket s = server.accept();
-				System.out.println("New connection!");
+				// System.out.println("New connection!");
 				executorService.submit(new Response(s, this.node));
 			}
 		} catch (Exception e) {

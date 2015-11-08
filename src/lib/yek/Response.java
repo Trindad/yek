@@ -38,9 +38,9 @@ class Response implements Runnable {
 
       while (!in.ready()) {}
       String m = in.readLine(); // Read one line and output it
-      System.out.println("response: " + m);
+      // System.out.println("response: " + m);
       String[] parts = m.split(" ");
-      System.out.println("'" + parts[0] + "'");
+      // System.out.println("'" + parts[0] + "'");
       String response = "";
 
       switch (parts[0]) {
@@ -71,6 +71,12 @@ class Response implements Runnable {
           break;
         case "get":
           response = this.get(parts[1]);
+          break;
+        case "saver":
+          response = this.saveReplica(new BigInteger(parts[1]), parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]);
+          break;
+        case "remover":
+          response = this.removeReplica(parts[1]);
           break;
         default:
           break;
@@ -161,6 +167,26 @@ class Response implements Runnable {
     String key = Hash.base64Decode(keyBase64);
 
     return Hash.base64(this.node.get(key));
+  }
+
+  private String saveReplica(BigInteger id, String ip, int port, String keyBase64, String dataBase64)
+  {
+    String key = Hash.base64Decode(keyBase64);
+    String data = Hash.base64Decode(dataBase64);
+    NodeInfo n = new NodeInfo(id,ip,port);
+
+    this.node.saveReplica(n, key,data);
+
+    return "";
+  }
+
+  private String removeReplica(String keyBase64)
+  {
+    String key = Hash.base64Decode(keyBase64);
+
+    this.node.removeReplica(key);
+
+    return "";
   }
 
 

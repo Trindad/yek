@@ -14,14 +14,16 @@
 *   limitations under the License.
  */
 package yek.chord;
-import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.concurrent.SynchronousQueue;
 
 public class Replicator implements Runnable {
+	ArrayDeque<QueueItem> queue;
 	Node node;
-	Queue<> queue;
 
 	public Replicator(Node n)
 	{
+		this.queue = new ArrayDeque<QueueItem>();
 		this.node = n;
 	}
 
@@ -32,11 +34,42 @@ public class Replicator implements Runnable {
 			try 
 			{
 				Thread.sleep(10000);
+				System.out.println("replication queue size: " + queue.size());
 
-				queue.remove();
+				if (queue.isEmpty()) 
+				{
+					continue;
+				}
+
+				QueueItem item = queue.removeFirst();
+
+				if (item.operation.equals("delete")) 
+				{
+					Request.removeReplica(node.routingTable.successorList[0],item.key);
+				}
+				else
+				{
+
+					Request.saveReplica(node.routingTable.successorList[0],this.node.info, item.data, item.key);
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void insert(String key, String operation, String data) throws Exception
+	{
+		QueueItem item = new QueueItem(key,operation,data);
+
+		queue.add(item);
+	}
+
+	public void insert(String key, String operation) throws Exception
+	{
+		QueueItem item = new QueueItem(key,operation);
+
+		queue.add(item);
 	}
 }
