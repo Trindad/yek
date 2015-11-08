@@ -14,20 +14,37 @@
 *   limitations under the License.
  */
 package yek.chord;
-import java.util.*;
+import java.util.Enumeration;
 import java.math.BigInteger;
-import java.util.Hashtable;
-import java.io.IOException;
 
-public class Replica {
-	public NodeInfo info;
-	String key;
-	String data;
+public class TakeOverScheduler implements Runnable {
 
-	public Replica(NodeInfo info, String key, String data)
+	Node node;
+	BigInteger id;
+
+	public TakeOverScheduler(Node n, BigInteger id)
 	{
-		this.info = info;
-		this.key = key;
-		this.data = data;
+		this.node = n;
+		this.id = id;
+	}
+
+	public void run()
+	{
+		try {
+			Thread.sleep(5000);
+			for (Enumeration<BigInteger> it = node.copies.keys(); it.hasMoreElements();)
+			{
+				BigInteger key = it.nextElement();
+				Replica r = node.copies.get(key);
+
+				if (r.info.id.equals(id)) {
+					node.put(r.key, r.data);
+					node.copies.remove(key);
+				}
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

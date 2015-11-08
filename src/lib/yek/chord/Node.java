@@ -202,7 +202,7 @@ public class Node {
 
 			BigInteger id = h.sha1(key);
 
-			Replica r = new Replica(n, data);
+			Replica r = new Replica(n, key, data);
 
 			this.copies.put(id,r);
 		}
@@ -324,6 +324,8 @@ public class Node {
 		try {
 			Request._make(this.routingTable.predecessorList[0], "heartbeat");
 		} catch(IOException e) {
+			TakeOverScheduler sch = new TakeOverScheduler(this, this.routingTable.predecessorList[0].id);
+			new Thread(sch).start();
 			this.routingTable.predecessorList[0] = null;
 		} catch (Exception e) {
 			e.printStackTrace();
