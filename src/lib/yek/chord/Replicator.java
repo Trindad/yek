@@ -16,6 +16,7 @@
 package yek.chord;
 import java.util.ArrayDeque;
 import java.util.concurrent.SynchronousQueue;
+import java.util.ArrayList;
 
 public class Replicator implements Runnable {
 	ArrayDeque<QueueItem> queue;
@@ -42,17 +43,42 @@ public class Replicator implements Runnable {
 				}
 
 				QueueItem item = queue.removeFirst();
+				ArrayList<NodeInfo> nodes = new ArrayList<NodeInfo>();
 
-				if (item.operation.equals("delete")) 
-				{
-					Request.removeReplica(node.routingTable.successorList[0],item.key);
-				}
-				else
-				{
-
-					Request.saveReplica(node.routingTable.successorList[0],this.node.info, item.data, item.key);
+				if (node.routingTable.successorList[0].id.equals(node.info.id)) {
+					continue;
 				}
 
+				nodes.add(node.routingTable.successorList[0]);
+
+				if (node.routingTable.successorList[1] != null &&
+					!node.routingTable.successorList[1].id.equals(node.info.id) &&
+					!nodes.contains(node.routingTable.successorList[1])) {
+					nodes.add(node.routingTable.successorList[1]);
+				}
+
+				if (node.routingTable.predecessorList[0] != null &&
+					!node.routingTable.predecessorList[0].id.equals(node.info.id) &&
+					!nodes.contains(node.routingTable.predecessorList[0])) {
+					nodes.add(node.routingTable.predecessorList[0]);
+				}
+
+				if (node.routingTable.predecessorList[1] != null && 
+					!node.routingTable.predecessorList[1].id.equals(node.info.id) &&
+					!nodes.contains(node.routingTable.predecessorList[1])) {
+					nodes.add(node.routingTable.predecessorList[1]);
+				}
+
+				for (int i = 0; i < nodes.size(); i++) {
+					if (item.operation.equals("delete")) 
+					{
+						Request.removeReplica(nodes.get(i),item.key);
+					}
+					else
+					{
+						Request.saveReplica(nodes.get(i),this.node.info, item.data, item.key);
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
