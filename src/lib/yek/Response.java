@@ -53,6 +53,12 @@ class Response implements Runnable {
         case "successor":
           response = this.successor();
           break;
+        case "areyounew":
+          response = this.amINew();
+          break;
+        case "notnewanymore":
+          response = this.notNewAnymore();
+          break;
         case "notify":
           String ip = parts[2];
           int port = Integer.parseInt(parts[3]);
@@ -130,6 +136,17 @@ class Response implements Runnable {
 
     this.node.notify(n);
 
+    return "";
+  }
+
+  private String amINew()
+  {
+    return this.node.iAmNew ? "yes" : "no";
+  }
+
+  private String notNewAnymore()
+  {
+    this.node.iAmNew = false;
     return "";
   }
 

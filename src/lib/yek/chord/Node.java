@@ -23,18 +23,20 @@ public class Node {
 
 	public NodeInfo info;
 	public RoutingTable routingTable;
-	public Hashtable<BigInteger, String> hashtable;
+	public Hashtable<BigInteger, Data> hashtable;
 	public Hashtable<BigInteger, Replica> copies;
 	private boolean isUpdatingFingerTable;
 	public Replicator replicator;
+	public boolean iAmNew;
 
 	public Node(String ip, int port, BigInteger id)
 	{
 		this.info = new NodeInfo(id, ip, port);
 		this.routingTable = new RoutingTable();
-		this.hashtable = new Hashtable<BigInteger, String>();
+		this.hashtable = new Hashtable<BigInteger, Data>();
 		this.copies = new Hashtable<BigInteger, Replica>();
 		this.isUpdatingFingerTable = false;
+		this.iAmNew = true;
 
 		this.replicator = new Replicator(this);
 		(new Thread(this.replicator)).start();
@@ -150,7 +152,7 @@ public class Node {
 		if (this.routingTable.predecessorList[0] == null)
 		{
 			this.routingTable.predecessorList[0] = n;
-
+			this.guideNewGuy(n);
 			return;
 		}
 
@@ -159,15 +161,27 @@ public class Node {
 			if ((n.id.compareTo(this.routingTable.predecessorList[0].id) > 0 || n.id.compareTo(this.info.id) < 0) )
 			{
 				this.routingTable.predecessorList[0] = n;
+				this.guideNewGuy(n);
 			}
 
 		} else {
 			if ((n.id.compareTo(this.routingTable.predecessorList[0].id) > 0 && n.id.compareTo(this.info.id) < 0) )
 			{
 				this.routingTable.predecessorList[0] = n;
+				this.guideNewGuy(n);
 			}
 		}
 
+	}
+
+	private void guideNewGuy(NodeInfo n)
+	{
+		boolean isHeNew = Request.askIfNew(n);
+
+		if (isHeNew) {
+			Request.sayHesNotNewAnymore(n);
+			(new Thread(new NewNodeDataScheduler(this, n))).start();
+		}
 	}
 
 	public void put(String key,String data)
@@ -180,7 +194,8 @@ public class Node {
 
 			if (n.id.equals(this.info.id))
 			{
-				this.hashtable.put(id,data);
+				Data t = new Data(key, data);
+				this.hashtable.put(id,t);
 			}
 			else
 			{
@@ -226,7 +241,8 @@ public class Node {
 			{
 				if (this.hashtable.containsKey(id))
 				{
-					return this.hashtable.get(id);
+					Data t = this.hashtable.get(id);
+					return t == null ? "" : t.data;
 				}
 			}
 			else
@@ -270,7 +286,8 @@ public class Node {
 
 			if (n.id.equals(this.info.id))
 			{
-				this.hashtable.replace(id,data);
+				Data t = new Data(key, data);
+				this.hashtable.replace(id,t);
 			}
 			else
 			{

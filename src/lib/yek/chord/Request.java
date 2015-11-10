@@ -110,6 +110,23 @@ public class Request {
 		make(s,message);
 	}
 
+	public static boolean askIfNew(NodeInfo s)
+	{
+		String message = "areyounew";
+
+		String answer = make(s,message);
+		String[] p = answer.split(" ");
+
+		return p[0].equals("yes");
+	}
+
+	public static void sayHesNotNewAnymore(NodeInfo s)
+	{
+		String message = "notnewanymore";
+
+		make(s,message);
+	}
+
 	public static void store(NodeInfo s, String key, String data)
 	{
 
