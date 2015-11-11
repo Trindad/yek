@@ -32,6 +32,8 @@ public class NewNodeDataScheduler implements Runnable {
 	public void run()
 	{
 		try {
+			Thread.sleep(12000);
+
 			ArrayDeque<Data> datas = new ArrayDeque<Data>();
 
 			for (Enumeration<BigInteger> it = node.hashtable.keys(); it.hasMoreElements();)
@@ -39,24 +41,18 @@ public class NewNodeDataScheduler implements Runnable {
 				BigInteger key = it.nextElement();
 				Data data = node.hashtable.get(key);
 
-				if (target.id.compareTo(node.info.id) > 0)
+				NodeInfo n = node.findSuccessor(key);
+				if (n.id.compareTo(target.id) == 0)
 				{
-					if ((key.compareTo(target.id) > 0 || key.compareTo(node.info.id) < 0) )
-					{
-						datas.add(data);
-					}
-
-				} else {
-					if ((key.compareTo(target.id) > 0 && key.compareTo(node.info.id) < 0) )
-					{
-						datas.add(data);
-					}
+					datas.add(data);
 				}
 			}
 
 			while (datas.isEmpty() == false) {
 				Data d = datas.removeFirst();
+				
 				Request.store(target,d.key,d.data);
+				node.hashtable.remove(key);
 			}
 		} catch (Exception e)
 		{

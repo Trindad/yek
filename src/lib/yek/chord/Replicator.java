@@ -34,8 +34,7 @@ public class Replicator implements Runnable {
 		{		
 			try 
 			{
-				Thread.sleep(10000);
-				System.out.println("replication queue size: " + queue.size());
+				Thread.sleep(200);
 
 				if (queue.isEmpty()) 
 				{

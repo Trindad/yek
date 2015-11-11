@@ -33,7 +33,7 @@ public class BackgroundWorker implements Runnable {
 		while (true)
 		{
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(3000);
 				System.out.println("successor "+this.node.routingTable.successorList[0].ip + "/" + this.node.routingTable.successorList[0].port);
 				if (this.node.routingTable.predecessorList[0] != null) {
 					System.out.println("predecessor "+this.node.routingTable.predecessorList[0].ip + "/" + this.node.routingTable.predecessorList[0].port);
