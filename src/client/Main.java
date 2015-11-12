@@ -19,8 +19,8 @@ import yek.chord.*;
 
 class Main {
 	public static void main(String[] args) {
-	
-		if (args.length < 2) 
+
+		if (args.length < 2)
 		{
 			System.out.println("Wrong number of arguments");
 			System.exit(1);
@@ -42,9 +42,24 @@ class Main {
 		}
 
 		Scanner keyboard = new Scanner(System.in);
-		
+
+		for (Integer i = 0; i < 100000; i++) {
+			String str = "key_" + i.toString();
+
+			Request.store(n,str,"real value");
+		}
+
+		for (Integer i = 0; i < 100000; i++) {
+			String str = "key_" + i.toString();
+			String res = Request.get(n,str);
+
+			if ("real value".equals(res) == false) {
+				System.out.println("CRAP!");
+			}
+		}
+
 		while(true)
-		{	
+		{
 			System.out.println("Options:");
 			System.out.println("- get");
 			System.out.println("- put");
@@ -53,7 +68,7 @@ class Main {
 			String option = keyboard.next();
 			String key = "";
 
-			switch (option) 
+			switch (option)
 			{
 				case "put":
 					System.out.print("key: ");
@@ -79,8 +94,8 @@ class Main {
 				case "exit":
 					System.exit(1);
 				default:
-					break;		
-			}	
+					break;
+			}
 		}
 	}
 }

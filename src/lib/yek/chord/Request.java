@@ -18,24 +18,44 @@ package yek.chord;
 import java.math.BigInteger;
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Request {
+	private static ArrayList<SocketConnection> connections = new ArrayList<SocketConnection>();
+
 	public static String _make(NodeInfo n, String message) throws Exception {
-		// System.out.println(message);
-		Socket socket = new Socket(n.ip, n.port);
-		OutputStream os = socket.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os);
-        BufferedWriter bw = new BufferedWriter(osw);
-        bw.write(message + "\n");
-        bw.flush();
+		Socket socket = null;
 
-		BufferedReader in = new BufferedReader(new
-		InputStreamReader(socket.getInputStream()));
+		for (int i = 0; i < Request.connections.size(); i++) {
+			if (Request.connections.get(i).node.id.equals(n.id)) {
+				socket = Request.connections.get(i).socket;
+				break;
+			}
+		}
 
-		while (!in.ready()) {}
-		String m = in.readLine(); // Read one line and output it
-		// System.out.println(m);
-		in.close();
+		if (socket == null) {
+			socket = new Socket(n.ip, n.port);
+			SocketConnection sc = new SocketConnection(n, socket);
+			Request.connections.add(sc);
+		}
+
+		String m = "";
+
+		synchronized (socket) {
+			OutputStream os = socket.getOutputStream();
+	        OutputStreamWriter osw = new OutputStreamWriter(os);
+	        BufferedWriter bw = new BufferedWriter(osw);
+	        bw.write(message + "\n");
+	        bw.flush();
+
+			BufferedReader in = new BufferedReader(new
+			InputStreamReader(socket.getInputStream()));
+
+			while (!in.ready()) {}
+			m = in.readLine(); // Read one line and output it
+			// System.out.println(m);
+		}
+
 		return m;
 	}
 

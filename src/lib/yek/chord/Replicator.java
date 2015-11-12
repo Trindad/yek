@@ -31,13 +31,12 @@ public class Replicator implements Runnable {
 	public void run()
 	{
 		while(true)
-		{		
-			try 
+		{
+			try
 			{
-				Thread.sleep(200);
-
-				if (queue.isEmpty()) 
+				if (queue.isEmpty())
 				{
+					Thread.sleep(200);
 					continue;
 				}
 
@@ -62,14 +61,14 @@ public class Replicator implements Runnable {
 					nodes.add(node.routingTable.predecessorList[0]);
 				}
 
-				if (node.routingTable.predecessorList[1] != null && 
+				if (node.routingTable.predecessorList[1] != null &&
 					!node.routingTable.predecessorList[1].id.equals(node.info.id) &&
 					!nodes.contains(node.routingTable.predecessorList[1])) {
 					nodes.add(node.routingTable.predecessorList[1]);
 				}
 
 				for (int i = 0; i < nodes.size(); i++) {
-					if (item.operation.equals("delete")) 
+					if (item.operation.equals("delete"))
 					{
 						Request.removeReplica(nodes.get(i),item.key);
 					}

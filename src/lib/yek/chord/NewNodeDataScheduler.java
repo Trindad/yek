@@ -46,13 +46,13 @@ public class NewNodeDataScheduler implements Runnable {
 				{
 					datas.add(data);
 				}
+				node.hashtable.remove(key);
 			}
 
 			while (datas.isEmpty() == false) {
 				Data d = datas.removeFirst();
-				
+
 				Request.store(target,d.key,d.data);
-				node.hashtable.remove(key);
 			}
 		} catch (Exception e)
 		{
