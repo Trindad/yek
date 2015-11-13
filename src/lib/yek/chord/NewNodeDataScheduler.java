@@ -43,9 +43,8 @@ public class NewNodeDataScheduler implements Runnable {
 				if (n.id.compareTo(target.id) == 0)
 				{
 					Request.store(target,data.key,data.data);
+					node.hashtable.remove(key);
 				}
-
-				node.hashtable.remove(key);
 			}
 		} catch (Exception e)
 		{

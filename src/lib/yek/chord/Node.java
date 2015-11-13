@@ -217,9 +217,11 @@ public class Node {
 
 			BigInteger id = h.sha1(key);
 
-			Replica r = new Replica(n, key, data);
+			if (!this.hashtable.containsKey(id)) {
+				Replica r = new Replica(n, key, data);
 
-			this.copies.put(id,r);
+				this.copies.put(id,r);
+			}
 		}
 		catch (Exception e)
 		{

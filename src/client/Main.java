@@ -43,20 +43,20 @@ class Main {
 
 		Scanner keyboard = new Scanner(System.in);
 
-		for (Integer i = 0; i < 100000; i++) {
-			String str = "key_" + i.toString();
+		// for (Integer i = 0; i < 100000; i++) {
+		// 	String str = "key_" + i.toString();
 
-			Request.store(n,str,"real value");
-		}
+		// 	Request.store(n,str,"real value");
+		// }
 
-		for (Integer i = 0; i < 100000; i++) {
-			String str = "key_" + i.toString();
-			String res = Request.get(n,str);
+		// for (Integer i = 0; i < 100000; i++) {
+		// 	String str = "key_" + i.toString();
+		// 	String res = Request.get(n,str);
 
-			if ("real value".equals(res) == false) {
-				System.out.println("CRAP!");
-			}
-		}
+		// 	if ("real value".equals(res) == false) {
+		// 		System.out.println("CRAP! " + res);
+		// 	}
+		// }
 
 		while(true)
 		{
