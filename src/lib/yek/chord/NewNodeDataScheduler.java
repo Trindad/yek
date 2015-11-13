@@ -46,7 +46,6 @@ public class NewNodeDataScheduler implements Runnable {
 				{
 					datas.add(data);
 				}
-				node.hashtable.remove(key);
 			}
 
 			while (datas.isEmpty() == false) {
