@@ -174,6 +174,11 @@ public class Node {
 
 	}
 
+	/**
+	 * Verifica se o nó é novo na rede
+	 * Se for envia os dados da sua responsabilidade agora
+	 * e envia as cópias independentemente
+	 */
 	private void guideNewGuy(NodeInfo n)
 	{
 		boolean isHeNew = Request.askIfNew(n);
@@ -182,6 +187,8 @@ public class Node {
 			Request.sayHesNotNewAnymore(n);
 			(new Thread(new NewNodeDataScheduler(this, n))).start();
 		}
+		
+		
 	}
 
 	public void put(String key,String data)

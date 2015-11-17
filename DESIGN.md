@@ -12,4 +12,3 @@ De modo geral o Chord cada nó escolhe um ID _n_-bit, geralmente através de uma
 Cada chave será também armazenada em outros nós, para que haja redundância dos dados, e no caso de falha, estes outros nós são capazes de atender à requisições.
 Para garantir a alcançabilidade o YEK guarda em cada nó um lista com 4 sucessores e 4 predecessores. Assim, se o sucessor falhar a requisição poderá ser enviada para o próximo sucessor.
 
-Quando esse nó com falha voltar, é necessário atualizá-lo com as últimas versões das chaves em que é responsável. Para isso, o YEK se utiliza de Merkle Trees, a fim de mandar pela rede apenas os dados que são necessários.
