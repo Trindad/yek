@@ -10,22 +10,18 @@ YEK é um banco de dados chave-valor distribuído.
 
 ### Como compilar
 
-Anteriormente, o sistema de build do YEK usava um aplicativo chamado Buildr, porém o mesmo não se mostrou flexível o suficiente para atender as necessidades. O novo sistema de build do YEK usa o Make, que é muito mais simples de ter instalado e mais simples de usar. Abaixo seguem os comandos para rodar o YEK.
-
-##### Servidor inicial
-
-```
-make run_initial_server
-```
-
-##### Demais servidores
+O YEK está dividido em dois aplicativos: o servidor e um cliente.
+Ambos precisam ser compilados antes de ser executados. Basta rodar os comandos:
 
 ```
-make run_server ip="<ip_do_no_inicial>"
+make server_jar
+make client_jar
 ```
 
-##### Cliente
+Para rodar o servidor initial execute `java -jar yek.jar`.
+Para rodar os demais nós da rede, execute `java -jar yek.jar IP_DE_ALGUM_NO_DA_REDE`
 
-```
-make run_client ip="<ip_de_um_no_da_rede>" port="<porta_do_no>"
-```
+Por fim, para rodar o cliente, utilize o comando `java -jar yek_cli.jar IP_DE_ALGUM_NO_DA_REDE PORTA`.
+O mais fácil é se conectar ao nó inicial, já que ele possui porta fixa `32000`.
+
+Para mais detalhes, veja a [documentação completa](https://github.com/Trindad/yek/blob/master/projeto.pdf).
