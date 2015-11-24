@@ -28,6 +28,9 @@ public class Server implements Runnable {
 	private Node node;
 	private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
+	/**
+	 * Inicia nó, adiciona informações correspondentes ao nó
+	 */
 	public Node initNode()
 	{
 		try
@@ -57,6 +60,9 @@ public class Server implements Runnable {
 
 	}
 
+	/**
+	 * Inicia servidor para receber conexões
+	 */
 	private void initSocketServer()
 	{
 		try {
@@ -64,7 +70,6 @@ public class Server implements Runnable {
 
 			while (true) {
 				Socket s = server.accept();
-				// System.out.println("New connection!");
 				executorService.submit(new Response(s, this.node));
 			}
 		} catch (Exception e) {
@@ -77,6 +82,10 @@ public class Server implements Runnable {
 		initSocketServer();
 	}
 
+	/**
+	 * Inicia Servidor conectado a porta 32000
+	 * Se não pega a porta passada como parâmetro
+	 */
 	public void start(boolean initial, String ip, int port)
 	{
 		try {
@@ -88,6 +97,7 @@ public class Server implements Runnable {
 		this.port = server.getLocalPort();
 
 		this.node = initNode();
+
 		if (initial) {
 			this.node.create();
 		}
@@ -109,26 +119,29 @@ public class Server implements Runnable {
 		}
 	}
 
+	/**
+	 * Encontra IP do nó (cabeada ou sem fio)
+	 */
 	public static String getIpAddress() {
 		String eth0 = "";
 		String wlan0 = "";
 
-    try {
-      for (Enumeration en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-        NetworkInterface intf = (NetworkInterface) en.nextElement();
-        if ("eth0".compareTo(intf.getName()) == 0 || "wlan0".compareTo(intf.getName()) == 0) {
-	        Enumeration<InetAddress> inetAddresses = intf.getInetAddresses();
-	        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-	        		if (!inetAddress.isLinkLocalAddress() && !inetAddress.isLoopbackAddress()) {
-	        			if (intf.getName() == "eth0") {
-	            		eth0 = inetAddress.toString().replace("/", "");
-	        			} else {
-	        				wlan0 = inetAddress.toString().replace("/", "");
-	        			}
-	        		}
-	        }
+	    try {
+	      for (Enumeration en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+	        NetworkInterface intf = (NetworkInterface) en.nextElement();
+	        if ("eth0".compareTo(intf.getName()) == 0 || "wlan0".compareTo(intf.getName()) == 0) {
+		        Enumeration<InetAddress> inetAddresses = intf.getInetAddresses();
+		        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+		        		if (!inetAddress.isLinkLocalAddress() && !inetAddress.isLoopbackAddress()) {
+		        			if (intf.getName() == "eth0") {
+		            		eth0 = inetAddress.toString().replace("/", "");
+		        			} else {
+		        				wlan0 = inetAddress.toString().replace("/", "");
+		        			}
+		        		}
+		        }
+		      }
 	      }
-      }
     } catch (SocketException ex) {
     	//ex.printStackTrace();
       // Log.e("Socket exception in GetIP Address of Utilities", ex.toString());

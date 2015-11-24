@@ -28,6 +28,9 @@ public class BackgroundWorker implements Runnable {
 		start();
 	}
 
+	/**
+	 * Inicia um nó
+	 */
 	public void start()
 	{
 		while (true)

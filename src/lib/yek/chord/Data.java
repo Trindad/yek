@@ -18,6 +18,9 @@ public class Data {
 	String key;
 	String data;
 
+	/**
+	 * Dados do nó 
+	 */
 	public Data(String key, String data){
 		this.key = key;
 		this.data = data;

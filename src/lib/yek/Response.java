@@ -30,6 +30,9 @@ class Response implements Runnable {
     this.node = node;
   }
 
+  /**
+   * Inicia serviços
+   */
   public void run() {
     //Make sure to close
     try {
@@ -99,6 +102,9 @@ class Response implements Runnable {
     }
   }
 
+  /**
+   * Encontra sucessor através do id recursivamente
+   */
   private String findSuccessor(BigInteger id)
   {
     NodeInfo n = this.node.findSuccessor(id);
@@ -106,6 +112,9 @@ class Response implements Runnable {
     return n.id.toString() + " " + n.ip + " " + n.port;
   }
 
+  /**
+   * Retorna predecessor que está armazenado na posição '0' da lista
+   */
   private String predecessor()
   {
     NodeInfo n = this.node.routingTable.predecessorList[0];
@@ -118,6 +127,9 @@ class Response implements Runnable {
     return n.id.toString() + " " + n.ip + " " + n.port;
   }
 
+  /**
+   * Retorna sucessor que está armazenado na posição '0' da lista
+   */
   private String successor()
   {
     NodeInfo n = this.node.routingTable.successorList[0];
@@ -130,6 +142,9 @@ class Response implements Runnable {
     return n.id.toString() + " " + n.ip + " " + n.port;
   }
 
+  /**
+   * Chama notify do nó, quando um nó informa outro nó que é predecessor dele
+   */
   private String notify(BigInteger id, String ip, int port)
   {
     NodeInfo n = new NodeInfo(id,ip,port);
@@ -150,6 +165,9 @@ class Response implements Runnable {
     return "";
   }
 
+  /**
+   * Insere no nó a chave e o dado
+   */
   private String store(String keyBase64, String dataBase64)
   {
     String key = Hash.base64Decode(keyBase64);
@@ -160,6 +178,9 @@ class Response implements Runnable {
     return "";
   }
 
+  /**
+   * Atualiza dado
+   */
   private String update(String keyBase64, String dataBase64)
   {
     String key = Hash.base64Decode(keyBase64);
@@ -170,6 +191,9 @@ class Response implements Runnable {
     return "";
   }
 
+  /**
+   * Deleta um dado através da chave
+   */
   private String delete(String keyBase64)
   {
     String key = Hash.base64Decode(keyBase64);
@@ -179,13 +203,19 @@ class Response implements Runnable {
     return "";
   }
 
-   private String get(String keyBase64)
+  /**
+   * Retorna uma chave 
+   */
+  private String get(String keyBase64)
   {
     String key = Hash.base64Decode(keyBase64);
 
     return Hash.base64(this.node.get(key));
   }
 
+  /**
+   * Salva um réplica, fazendo a conversão
+   */
   private String saveReplica(BigInteger id, String ip, int port, String keyBase64, String dataBase64)
   {
     String key = Hash.base64Decode(keyBase64);
@@ -197,6 +227,9 @@ class Response implements Runnable {
     return "";
   }
 
+  /**
+   * Remove uma réplica buscando pela chave
+   */
   private String removeReplica(String keyBase64)
   {
     String key = Hash.base64Decode(keyBase64);

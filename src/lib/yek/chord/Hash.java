@@ -22,6 +22,9 @@ import java.nio.charset.StandardCharsets;
 
 public class Hash {
 	
+	/**
+	 * Converte uma string para sha1
+	 */
 	public BigInteger sha1(String str) throws NoSuchAlgorithmException
 	{
 		MessageDigest d = null;
@@ -32,12 +35,18 @@ public class Hash {
 	    return new BigInteger(1,d.digest());
 	}
 
+	/**
+	 * Converte uma string para base 64
+	 */
 	public static String base64(String str)
 	{
         final byte[] authBytes = str.getBytes(StandardCharsets.UTF_8);
         return Base64.getEncoder().encodeToString(authBytes);
 	}
 
+	/**
+	 * Decodifica uma string
+	 */
 	public static String base64Decode(String token) 
 	{ 
 		byte[] decodedBytes = Base64.getDecoder().decode(token.getBytes()); 

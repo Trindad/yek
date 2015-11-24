@@ -18,6 +18,9 @@ import java.util.Enumeration;
 import java.math.BigInteger;
 import java.util.ArrayDeque;
 
+/**
+ * Envia dados para o novo nó
+ */
 public class NewNodeDataScheduler implements Runnable {
 
 	Node node;

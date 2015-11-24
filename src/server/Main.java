@@ -17,11 +17,12 @@ import yek.*;
 
 class Main {
 	public static void main(String[] args) {
-		boolean initial = args.length == 0;
+		boolean initial = args.length == 0;//verifica se é nó incial
 
 		Server s = new Server();
 		int port = 32000;//porta padrão
 
+		//verifica se existe a porta como segundo parâmetro de entrada
 		if (args.length > 1) 
 		{
 			port = Integer.parseInt(args[1]);
