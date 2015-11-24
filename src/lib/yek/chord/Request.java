@@ -46,7 +46,7 @@ public class Request {
 	{
 		int retries = 0;
 
-		while (retries < 4) {
+		while (retries < 10) {
 			try
 			{
 				String ret = _make(n, message);
@@ -55,16 +55,15 @@ public class Request {
 			}
 			catch (NoRouteToHostException nr) {
 				retries++;
-				
+
+			}
+			catch (ConnectException ce) {
+				retries++;
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 				break;
 			}
-		}
-
-		if (retries >= 4) {
-			System.out.println("failed");
 		}
 
 		return "";

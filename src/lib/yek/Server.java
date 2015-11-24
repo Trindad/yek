@@ -26,7 +26,7 @@ public class Server implements Runnable {
 	public ServerSocket server;
 	int port;
 	private Node node;
-	private ExecutorService executorService = Executors.newFixedThreadPool(500);
+	private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
 	public Node initNode()
 	{
