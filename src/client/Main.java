@@ -58,6 +58,9 @@ class Main {
 			}
 		}
 
+		/**
+		 * Funções que o banco consegue executar
+		 */
 		while(true)
 		{
 			System.out.println("Options:");
