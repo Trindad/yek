@@ -19,9 +19,13 @@ import java.io.*;
 import java.net.*;
 
 public class SocketConnection {
+	
 	NodeInfo node;
 	Socket socket;
 
+	/**
+	 * Insere as informações do nó correspondente ao socket
+	 */
 	public SocketConnection(NodeInfo n, Socket s)
 	{
 		this.node = n;

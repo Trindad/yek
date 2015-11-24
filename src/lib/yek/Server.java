@@ -26,7 +26,7 @@ public class Server implements Runnable {
 	public ServerSocket server;
 	int port;
 	private Node node;
-	private ExecutorService executorService = Executors.newCachedThreadPool();
+	private ExecutorService executorService = Executors.newFixedThreadPool(500);
 
 	public Node initNode()
 	{
@@ -77,7 +77,7 @@ public class Server implements Runnable {
 		initSocketServer();
 	}
 
-	public void start(boolean initial, String ip)
+	public void start(boolean initial, String ip, int port)
 	{
 		try {
 			this.server = new ServerSocket(initial ? 32000 : 0);
@@ -97,7 +97,6 @@ public class Server implements Runnable {
 
 		if (!initial) {
 			try {
-				int port = 32000;
 				Hash h = new Hash();
 				BigInteger b = h.sha1(ip + "/" + port);
 				NodeInfo n = new NodeInfo(b, ip, port);
@@ -131,8 +130,10 @@ public class Server implements Runnable {
 	      }
       }
     } catch (SocketException ex) {
+    	//ex.printStackTrace();
       // Log.e("Socket exception in GetIP Address of Utilities", ex.toString());
     }
+
     return wlan0.length() > 0 ? wlan0 : eth0;
   }
 }

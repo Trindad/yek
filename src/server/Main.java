@@ -20,7 +20,14 @@ class Main {
 		boolean initial = args.length == 0;
 
 		Server s = new Server();
+		int port = 32000;//porta padrão
 
-		s.start(initial,initial ? "" : args[0]);
+		if (args.length > 1) 
+		{
+			port = Integer.parseInt(args[1]);
+		}
+
+		s.start(initial,initial ? "" : args[0], port);
+
 	}
 }

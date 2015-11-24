@@ -24,49 +24,47 @@ public class Request {
 	private static ArrayList<SocketConnection> connections = new ArrayList<SocketConnection>();
 
 	public static String _make(NodeInfo n, String message) throws Exception {
-		Socket socket = null;
+		// System.out.println(message);
+		Socket socket = new Socket(n.ip, n.port);
+		socket.setSoTimeout(15000);
+		OutputStream os = socket.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        BufferedWriter bw = new BufferedWriter(osw);
+        bw.write(message + "\n");
+        bw.flush();
 
-		for (int i = 0; i < Request.connections.size(); i++) {
-			if (Request.connections.get(i).node.id.equals(n.id)) {
-				socket = Request.connections.get(i).socket;
-				break;
-			}
-		}
+		BufferedReader in = new BufferedReader(new
+		InputStreamReader(socket.getInputStream()));
 
-		if (socket == null) {
-			socket = new Socket(n.ip, n.port);
-			SocketConnection sc = new SocketConnection(n, socket);
-			Request.connections.add(sc);
-		}
-
-		String m = "";
-
-		synchronized (socket) {
-			OutputStream os = socket.getOutputStream();
-	        OutputStreamWriter osw = new OutputStreamWriter(os);
-	        BufferedWriter bw = new BufferedWriter(osw);
-	        bw.write(message + "\n");
-	        bw.flush();
-
-			BufferedReader in = new BufferedReader(new
-			InputStreamReader(socket.getInputStream()));
-
-			while (!in.ready()) {}
-			m = in.readLine(); // Read one line and output it
-			// System.out.println(m);
-		}
-
+		String m = in.readLine(); // Read one line and output it
+		// System.out.println(m);
+		in.close();
 		return m;
 	}
 
 	public static String make(NodeInfo n, String message)
 	{
-		try
-		{
-			return _make(n, message);
+		int retries = 0;
+
+		while (retries < 4) {
+			try
+			{
+				String ret = _make(n, message);
+
+				return ret;
+			}
+			catch (NoRouteToHostException nr) {
+				retries++;
+				
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				break;
+			}
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+
+		if (retries >= 4) {
+			System.out.println("failed");
 		}
 
 		return "";
@@ -79,6 +77,10 @@ public class Request {
 		String answer = make(n,message);
 
 		String[] p = answer.split(" ");//retorna ip e id
+
+		if (p.length < 1) {
+			return null;
+		}
 
 		NodeInfo node = new NodeInfo(new BigInteger(p[0]), p[1], Integer.parseInt(p[2]));
 

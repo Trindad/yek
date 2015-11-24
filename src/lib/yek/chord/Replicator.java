@@ -59,12 +59,18 @@ public class Replicator implements Runnable {
 					!node.routingTable.predecessorList[0].id.equals(node.info.id) &&
 					!nodes.contains(node.routingTable.predecessorList[0])) {
 					nodes.add(node.routingTable.predecessorList[0]);
-				}
 
-				if (node.routingTable.predecessorList[1] != null &&
-					!node.routingTable.predecessorList[1].id.equals(node.info.id) &&
-					!nodes.contains(node.routingTable.predecessorList[1])) {
-					nodes.add(node.routingTable.predecessorList[1]);
+					/**
+					 * Obtendo predecessor do nó precedecessor
+					 */
+					NodeInfo nPredecessor = Request.predecessor(node.routingTable.predecessorList[0]);
+
+					if (nPredecessor != null &&
+						!nPredecessor.id.equals(node.info.id) &&
+						!nodes.contains(nPredecessor)) {
+
+						nodes.add(nPredecessor);
+					}
 				}
 
 				for (int i = 0; i < nodes.size(); i++) {

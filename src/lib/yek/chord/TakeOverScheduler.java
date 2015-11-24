@@ -31,7 +31,7 @@ public class TakeOverScheduler implements Runnable {
 	public void run()
 	{
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(7000);
 			for (Enumeration<BigInteger> it = node.copies.keys(); it.hasMoreElements();)
 			{
 				BigInteger key = it.nextElement();

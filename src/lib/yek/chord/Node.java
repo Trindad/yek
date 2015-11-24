@@ -48,20 +48,11 @@ public class Node {
 			return this.routingTable.successorList[0];
 		}
 
-		NodeInfo n = null;
+		NodeInfo n = closestPrecedingNode(id);
 
-		if (isUpdatingFingerTable)
+		if (n.id.equals(this.info.id) || n == null)
 		{
-			n = this.routingTable.successorList[0];
-		}
-		else
-		{
-			n = closestPrecedingNode(id);
-		}
-
-		if (n.id.equals(this.info.id))
-		{
-			return n;
+			return this.info;
 		}
 
 		return Request.findSuccessor(n,id) ;
@@ -69,28 +60,6 @@ public class Node {
 
 	public NodeInfo closestPrecedingNode(BigInteger id)
 	{
-		try {
-			for (int i = 159; i >= 0 ; i--)
-			{
-				if (this.routingTable.fingerTable[i] == null) {
-					continue;
-				}
-
-				NodeInfo finger = this.routingTable.fingerTable[i].node;
-
-				if (this.info.id.compareTo(id) > 0) {
-					if (finger.id.compareTo(id) < 0 || finger.id.compareTo(this.info.id) > 0) {
-						return finger;
-					}
-				} else {
-					if (finger.id.compareTo(id) < 0 && finger.id.compareTo(this.info.id) > 0) {
-						return finger;
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return this.info;
 	}
 
@@ -187,8 +156,8 @@ public class Node {
 			Request.sayHesNotNewAnymore(n);
 			(new Thread(new NewNodeDataScheduler(this, n))).start();
 		}
-		
-		
+
+		(new Thread(new CopyScheduler(this))).start();
 	}
 
 	public void put(String key,String data)
@@ -199,7 +168,7 @@ public class Node {
 			BigInteger id = h.sha1(key);
 			NodeInfo n = findSuccessor(id);
 
-			if (n.id.equals(this.info.id))
+			if (n.id.equals(this.info.id) || n == null)
 			{
 				Data t = new Data(key, data);
 				this.hashtable.put(id,t);
@@ -210,6 +179,8 @@ public class Node {
 			}
 
 			this.replicator.insert(key,"put",data);
+
+			this.copies.remove(id);
 		}
 		catch (Exception e)
 		{
@@ -307,7 +278,6 @@ public class Node {
 		}
 		catch (Exception e)
 		{
-
 			e.printStackTrace();
 		}
 	}
@@ -400,18 +370,49 @@ public class Node {
 			newList[i] = successor;
 			current = successor;
 		}
+
+		boolean shouldQueue = false;
+
+		// Verifica se os sucessores mudaram, e se sim
+		// manda enviar cópias
+		if (this.routingTable.successorList[0] == null ||
+			(newList[0] != null &&
+			!this.routingTable.successorList[0].id.equals(newList[0].id)))
+		{
+			shouldQueue = true;
+		}
+
+		if (this.routingTable.successorList[1] == null ||
+			(newList[1] != null &&
+			!this.routingTable.successorList[1].id.equals(newList[1].id)))
+		{
+			shouldQueue = true;
+		}
+
+		if (shouldQueue) {
+			// fillFingerTable();
+			(new Thread(new CopyScheduler(this))).start();
+		}
+
 		this.routingTable.successorList = newList;
+	}
 
-		// System.out.println("List of successors:");
-		// for (int j = 0; j < 4; j++) {
-		// 	if (this.routingTable.successorList[j] == null) {
-		// 		continue;
-		// 	}
-
-		// 	String ip = this.routingTable.successorList[j].ip;
-		// 	int port = this.routingTable.successorList[j].port;
-		// 	System.out.println(ip + "/" + port);
-		// }
-		// System.out.println("----------------------------");
+	/**
+	 * Empilha todas as chaves no replicator
+	 * para enviar cópias ao nós "adjacentes"
+	 */
+	public void queueEverything()
+	{
+		try {
+			for (Enumeration<BigInteger> it = this.hashtable.keys(); it.hasMoreElements();)
+			{
+				BigInteger key = it.nextElement();
+				Data data = this.hashtable.get(key);
+				this.replicator.insert(data.key,"put",data.data);
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

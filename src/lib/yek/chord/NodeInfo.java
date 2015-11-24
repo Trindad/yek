@@ -25,7 +25,7 @@ public class NodeInfo {
 	public NodeInfo(BigInteger id, String ip, int port)
 	{
 		this.ip = ip;
-    this.id = id;
+    	this.id = id;
 		this.port = port;
 	}
 }

@@ -7,7 +7,7 @@ compile_client: lib
 run_initial_server: compile_server
 	java -classpath target/server:target/lib Main
 run_server: compile_server
-	java -classpath target/server:target/lib Main $(ip)
+	java -classpath target/server:target/lib Main $(ip) $(port)
 run_client: compile_client
 	java -classpath target/client:target/lib Main $(ip) $(port)
 client_jar: compile_client
